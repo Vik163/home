@@ -1,9 +1,9 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { HapticTab } from "@/components/haptic-tab";
-import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/shared/constants/theme/theme";
+import { HapticTab } from "@/shared/lib/haptic-tab";
+import { IconSymbol } from "@/shared/ui/IconSymbol/icon-symbol";
 import { useColorScheme } from "react-native";
 
 export default function TabLayout() {
