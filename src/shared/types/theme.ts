@@ -6,4 +6,4 @@ export interface Theme {
   colors: { [key in Colors]: string };
 }
 
-export type ThemeScheme = "light" | "dark" | null;
+export type ThemeScheme = "light" | "dark";

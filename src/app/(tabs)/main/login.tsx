@@ -1,3 +1,4 @@
+import { SwitchTheme } from "@/features/switchTheme/SwitchTheme";
 import { useNavigationActions } from "@/shared/hooks/useNavigationActions";
 import { Link } from "expo-router";
 import React from "react";
@@ -5,7 +6,8 @@ import { Button, StyleSheet } from "react-native";
 import * as UI from "shared/ui";
 
 const Login = () => {
-  const { goToPush } = useNavigationActions();
+  const { goToPush, goToMain } = useNavigationActions();
+
   return (
     <UI.Container>
       <Button
@@ -14,9 +16,16 @@ const Login = () => {
           goToPush();
         }}
       />
+      <Button
+        title={"main"}
+        onPress={() => {
+          goToMain();
+        }}
+      />
       <Link href="/modal" style={styles.link}>
         Open modal
       </Link>
+      <SwitchTheme />
     </UI.Container>
   );
 };

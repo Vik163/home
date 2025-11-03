@@ -1,19 +1,15 @@
 import React from "react";
 
 import { themes } from "../constants/theme/themes";
-import { Theme } from "../types/theme";
+import { Theme, ThemeScheme } from "../types/theme";
 
 interface ProvidedValue {
-  themeScheme: "light" | "dark";
+  themeScheme: ThemeScheme;
   theme: Theme;
-  toggleTheme: () => void;
+  setTheme?: (newTheme: ThemeScheme) => void;
 }
 
 export const ThemeContext = React.createContext<ProvidedValue>({
   themeScheme: "light",
   theme: themes.light,
-  toggleTheme: () => {
-    // eslint-disable-next-line no-console
-    console.log("ThemeProvider is not rendered!");
-  },
 });

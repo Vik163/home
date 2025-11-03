@@ -29,7 +29,7 @@ export const TextInput = forwardRef<RNTextInput, InputProps & TextInputProps>(
       <RNTextInput
         {...props}
         ref={ref}
-        placeholderTextColor={props.placeholderTextColor ?? theme.colors.text}
+        placeholderTextColor={props.placeholderTextColor ?? theme?.colors.text}
         style={styles.container}
       />
     );
