@@ -21,7 +21,7 @@
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.vik163.home",
-      "googleServicesFile": "./app/google-services.json"
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "output": "static",
