@@ -8,5 +8,6 @@ export const palette = {
   alto: "#D8D8D8",
   redOrange: "#FF3B30",
   codGray: "#121212",
+  lightGrey: "#EDEDED",
   iron: "#E5E5E7",
 };

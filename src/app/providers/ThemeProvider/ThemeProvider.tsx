@@ -17,7 +17,7 @@ const ThemeProvider = memo<Props>((props) => {
 
   useEffect(() => {
     const getCurrentTheme = async () => {
-      const themeScheme = await storage.getItem("themeScheme");
+      const themeScheme = await storage?.getItem("themeScheme");
 
       setTheme(initial || themeScheme || colorScheme || "light");
     };

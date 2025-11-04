@@ -1,8 +1,13 @@
+import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 
 import { useTheme } from "@/shared/hooks/useTheme";
+import { useEffect } from "react";
 import ThemeProvider from "./providers/ThemeProvider/ThemeProvider";
+
+SplashScreen.preventAutoHideAsync();
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -11,6 +16,21 @@ export const unstable_settings = {
 export default function RootLayout() {
   //* Получить настройки с сервера
   const { themeScheme } = useTheme();
+  const [loaded, error] = useFonts({
+    Alegreya: require("../shared/assets/fonts/Alegreya-Black.ttf"),
+    // Roboto: require("../shared/assets/fonts/Roboto-Black.ttf"),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+
   return (
     <ThemeProvider initial={themeScheme}>
       <Stack>
@@ -20,7 +40,7 @@ export default function RootLayout() {
           options={{ presentation: "modal", title: "Modal" }}
         />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar hidden />
     </ThemeProvider>
   );
 }

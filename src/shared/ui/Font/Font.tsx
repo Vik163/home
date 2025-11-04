@@ -1,10 +1,5 @@
+import { FontFamily, FontSizes, FontWeights } from "@/shared/constants/fonts";
 import { useStyles } from "@/shared/hooks/useStyles";
-import {
-  FontFamily,
-  Fonts,
-  FontSizes,
-  FontWeights,
-} from "@/shared/types/fonts";
 import { Colors, Theme } from "@/shared/types/theme";
 import React from "react";
 import { StyleSheet, Text, TextProps } from "react-native";
@@ -16,38 +11,40 @@ interface FontProps {
   lineHeight?: number;
   color?: Colors;
   children?: React.ReactNode;
-  underline?: boolean;
   alignCenter?: boolean;
   textAlign?: "left" | "auto" | "center" | "right" | "justify";
   textTransform?: "capitalize" | "lowercase" | "none" | "uppercase";
-  devMode?: boolean;
 }
 
-export function Font(props: FontProps & TextProps & Fonts) {
+export function Font(props: FontProps & TextProps) {
   const { styles } = useStyles(createStyles(props));
   return (
-    <Text adjustsFontSizeToFit {...props} style={styles.container}>
-      {props.devMode ? props.size : props.children}
+    <Text adjustsFontSizeToFit {...props} style={styles}>
+      {props.children}
     </Text>
   );
 }
 
-const createStyles = (font: FontProps & Fonts) => (theme: Theme) => {
+const createStyles = (font: FontProps & TextProps) => (theme: Theme) => {
   let lineHeight = font.lineHeight;
-  const fontSizes = font.fontSizes!;
-  const fontNames = font.fontNames!;
+  const fontSizes = font.size!;
 
   if (lineHeight) {
-    lineHeight = lineHeight * fontSizes[font.size ?? "medium"];
+    lineHeight = lineHeight * fontSizes;
   }
-  return StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       lineHeight,
       includeFontPadding: false,
       textAlignVertical: "center",
-      fontFamily: fontNames.roboto[font.weight ?? "medium"],
-      fontSize: fontSizes[font.size ?? "medium"],
+      fontFamily: "Alegreya",
+      fontSize: fontSizes,
+      fontWeight: font.weight,
       color: theme.colors[font.color ?? "text"],
+      textAlign: font.alignCenter ? "center" : font.textAlign,
+      textTransform: font.textTransform,
     },
   });
+
+  return { ...styles.container, ...(font.style as object) };
 };

@@ -1,27 +1,24 @@
-import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
-import { Collapsible } from "@/shared/ui/Collapsible/Collapsible";
-import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
-import { StyleSheet, Text } from "react-native";
+import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
+import { StyleSheet } from "react-native";
 
 import * as UI from "shared/ui";
 
 export default function RootPage() {
   return (
-    <UI.Container>
-      <Text>{"Добро пожаловать"}</Text>
-      <Collapsible title="Title" />
-      <ExternalLink
-        href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
-        style={{ backgroundColor: "#55ffff" }}
-      />
-      <AnimatedText />
+    <UI.Container addStyles={styles.container}>
+      <IndicationModule title="Температура в доме" />
+      <IndicationModule title="Напряжение" />
+      <IndicationModule title="Сила тока" />
+      <IndicationModule title="Частота" />
+      <IndicationModule title="Мощность" />
+      <IndicationModule title="Энергия" />
     </UI.Container>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    gap: 10,
     alignItems: "center",
     justifyContent: "center",
   },

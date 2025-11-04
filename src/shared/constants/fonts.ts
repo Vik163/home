@@ -1,33 +1,33 @@
 import { Platform } from "react-native";
-import { fluidType } from "../lib";
+import { fluidType } from "../lib/fluidLayout";
 
-export const fontFamily = {
-  roboto: "roboto",
-};
+export enum FontFamily {
+  ROBOTO = "Roboto",
+  ALEGRIA = "Alegreya",
+}
 
-export const fontWeights = {
-  regular: "regular",
-  medium: "medium",
-  bold: "bold",
-};
+export enum FontWeights {
+  BLACK = 900,
+  MEDIUM = 500,
+  BOLD = 700,
+}
+const xxSmall = fluidType({ min: 10, max: 12 });
+const xSmall = fluidType({ min: 12, max: 14 });
+const small = fluidType({ min: 14, max: 16 });
+const medium = fluidType({ min: 16, max: 18 });
+const large = fluidType({ min: 20, max: 22 });
+const xLarge = fluidType({ min: 24, max: 26 });
+const xxLarge = fluidType({ min: 32, max: 34 });
 
-export const fontNames = {
-  roboto: {
-    regular: undefined,
-    medium: undefined,
-    bold: undefined,
-  },
-};
-
-export const fontSizes = {
-  xxSmall: fluidType({ min: 10, max: 12 }),
-  xSmall: fluidType({ min: 12, max: 14 }),
-  small: fluidType({ min: 14, max: 16 }),
-  medium: fluidType({ min: 16, max: 18 }),
-  large: fluidType({ min: 20, max: 22 }),
-  xLarge: fluidType({ min: 24, max: 26 }),
-  xxLarge: fluidType({ min: 32, max: 34 }),
-};
+export enum FontSizes {
+  XXSMALL = xxSmall,
+  XSMALL = xSmall,
+  SMALL = small,
+  MEDIUM = medium,
+  LARGE = large,
+  XLARGE = xLarge,
+  XXLARGE = xxLarge,
+}
 
 export const Fonts = Platform.select({
   ios: {
