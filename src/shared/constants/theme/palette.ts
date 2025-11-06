@@ -7,7 +7,8 @@ export const palette = {
   shark: "#1C1C1E",
   alto: "#D8D8D8",
   redOrange: "#FF3B30",
-  codGray: "#121212",
+  codGray: "#778080",
   lightGrey: "#EDEDED",
   iron: "#E5E5E7",
+  lightBlue: "#D1E4F3",
 };

@@ -3,14 +3,14 @@ import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
 import { Collapsible } from "@/shared/ui/Collapsible/Collapsible";
 import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import * as React from "react";
-import { Button, Text } from "react-native";
+import { Button, StyleSheet, Text } from "react-native";
 import * as UI from "shared/ui";
 
 export default function MainPage() {
   const { goToPush, goToLogin } = useNavigationActions();
 
   return (
-    <UI.Container>
+    <UI.Container addStyles={styles.container} bgImage>
       <Text>{"Home"}</Text>
       <Button
         title={"Push"}
@@ -33,3 +33,10 @@ export default function MainPage() {
     </UI.Container>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

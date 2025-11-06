@@ -1,12 +1,13 @@
+import { palette } from "@/shared/constants/theme/palette";
 import { useEffectAfterMount } from "@/shared/hooks/useEffectAfterMount";
 import { useTheme } from "@/shared/hooks/useTheme";
+import { Font } from "@/shared/ui";
 import { useState } from "react";
-import { Text } from "react-native";
 import Switch from "react-native-switch-toggles";
 
 export const SwitchTheme = () => {
   const [isEnabled, setIsEnabled] = useState(false);
-  let { toggleTheme } = useTheme();
+  let { toggleTheme, themeScheme } = useTheme();
 
   useEffectAfterMount(() => {
     toggleTheme((newTheme) => {
@@ -22,20 +23,20 @@ export const SwitchTheme = () => {
 
   return (
     <>
-      <Text>{isEnabled ? "Тёмный" : "Светлый"}</Text>
+      <Font>{isEnabled ? "Тёмный" : "Светлый"}</Font>
       <Switch
-        size={60}
+        size={40}
         value={isEnabled}
         onChange={setIsEnabled}
-        activeThumbColor={"#f9ca24"}
-        inactiveThumbColor={"#6ab04c"}
-        activeTrackColor={"#6ab04c"}
-        inactiveTrackColor={"#ffffff"}
+        activeThumbColor={palette.black}
+        inactiveThumbColor={palette.lightBlue}
+        activeTrackColor={palette.codGray}
+        inactiveTrackColor={palette.codGray}
         renderInactiveThumbIcon={() => (
-          <Text style={{ fontSize: 14, color: "black" }}>☀️</Text>
+          <Font style={{ fontSize: 14, color: "black" }}>☀️</Font>
         )}
         renderActiveThumbIcon={() => (
-          <Text style={{ fontSize: 14, color: "black" }}>🌙</Text>
+          <Font style={{ fontSize: 14, color: "black" }}>🌙</Font>
         )}
       />
     </>

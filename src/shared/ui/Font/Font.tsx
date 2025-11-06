@@ -37,7 +37,7 @@ const createStyles = (font: FontProps & TextProps) => (theme: Theme) => {
       lineHeight,
       includeFontPadding: false,
       textAlignVertical: "center",
-      fontFamily: "Alegreya",
+      fontFamily: font.family,
       fontSize: fontSizes,
       fontWeight: font.weight,
       color: theme.colors[font.color ?? "text"],

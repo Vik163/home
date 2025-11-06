@@ -1,5 +1,8 @@
 import { FontFamily, FontSizes, FontWeights } from "@/shared/constants/fonts";
-import { Colors } from "@/shared/types/theme";
+import { palette } from "@/shared/constants/theme/palette";
+import { useStyles } from "@/shared/hooks/useStyles";
+import { Styles } from "@/shared/types/styles";
+import { Colors, Theme } from "@/shared/types/theme";
 import { StyleSheet, View } from "react-native";
 import { Font } from "../Font/Font";
 
@@ -17,43 +20,48 @@ interface IndicationModuleProps {
 
 export const IndicationModule = (props: IndicationModuleProps) => {
   const { title } = props;
+  const { styles, themeScheme } = useStyles(createStyles());
 
   return (
     <View style={styles.container}>
-      <Font
-        alignCenter
-        textTransform="uppercase"
-        family={FontFamily.ALEGRIA}
-        style={styles.title}
-      >
+      <Font alignCenter textTransform="uppercase" family={FontFamily.SOFIA}>
         {title}
       </Font>
       <Font
         alignCenter
         style={styles.box}
-        size={36}
-        family={FontFamily.ALEGRIA}
+        size={40}
+        family={FontFamily.SOFIA}
+        lineHeight={0.5}
       >
-        {2790}
+        {279}
       </Font>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderColor: "#EB4C42",
-    borderWidth: 1,
-  },
-  title: {
-    borderColor: "#EB4C42",
-    borderWidth: 1,
-  },
-  box: {
-    borderColor: "#EB4C42",
-    backgroundColor: "blue",
-    borderWidth: 1,
-    fontSize: 50,
-  },
-});
+const createStyles = (style?: Styles) => (theme: Theme) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      width: 160,
+      height: 100,
+      gap: 5,
+    },
+    box: {
+      width: 130,
+      borderColor: palette.black,
+      borderWidth: 1,
+      borderRadius: 10,
+      height: 50,
+      backgroundColor: theme.colors.background,
+      shadowColor: palette.black,
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.55,
+      shadowRadius: 3.84,
+      elevation: 3,
+    },
+    btn: {},
+  });
+};

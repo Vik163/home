@@ -5,13 +5,14 @@ import * as UI from "shared/ui";
 
 export default function RootPage() {
   return (
-    <UI.Container addStyles={styles.container}>
+    <UI.Container addStyles={styles.container} bgImage>
       <IndicationModule title="Температура в доме" />
       <IndicationModule title="Напряжение" />
       <IndicationModule title="Сила тока" />
       <IndicationModule title="Частота" />
       <IndicationModule title="Мощность" />
       <IndicationModule title="Энергия" />
+      <UI.TextButton title={"Обновить"} fontSize={20} />
     </UI.Container>
   );
 }

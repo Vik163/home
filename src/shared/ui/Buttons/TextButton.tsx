@@ -1,6 +1,8 @@
+import { FontFamily } from "@/shared/constants/fonts";
+import { palette } from "@/shared/constants/theme/palette";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { fluidSize } from "@/shared/lib/fluidLayout";
-import { Colors } from "@/shared/types/theme";
+import { Colors, Theme } from "@/shared/types/theme";
 import React from "react";
 import {
   ActivityIndicator,
@@ -17,10 +19,12 @@ export interface ButtonProps {
   active?: boolean;
   color?: Colors;
   textColor?: Colors;
+  fontSize?: number;
+  bgColor?: string;
 }
 
 export function TextButton(props: ButtonProps & TouchableOpacityProps) {
-  const { styles } = useStyles(createStyles);
+  const { styles } = useStyles(createStyles());
   return (
     <TouchableOpacity
       disabled={props.disabled || props.loading}
@@ -33,10 +37,9 @@ export function TextButton(props: ButtonProps & TouchableOpacityProps) {
         <ActivityIndicator testID="loading" />
       ) : (
         <Font
-          family="roboto"
-          weight="regular"
-          size="large"
+          family={FontFamily.ALEGRIA}
           color={props.textColor ?? "text"}
+          size={props.fontSize}
         >
           {props.title ?? ""}
         </Font>
@@ -45,13 +48,17 @@ export function TextButton(props: ButtonProps & TouchableOpacityProps) {
   );
 }
 
-const createStyles = () =>
-  StyleSheet.create({
+const createStyles = () => (theme: Theme) => {
+  return StyleSheet.create({
     container: {
       width: "100%",
       height: fluidSize(44, "vertical"),
-      borderRadius: fluidSize(8),
+      borderRadius: fluidSize(10),
       justifyContent: "center",
       alignItems: "center",
+      borderColor: palette.black,
+      borderWidth: 1,
+      backgroundColor: theme.colors.bgBtn,
     },
   });
+};

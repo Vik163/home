@@ -18,7 +18,7 @@ export default function RootLayout() {
   const { themeScheme } = useTheme();
   const [loaded, error] = useFonts({
     Alegreya: require("../shared/assets/fonts/Alegreya-Black.ttf"),
-    // Roboto: require("../shared/assets/fonts/Roboto-Black.ttf"),
+    SofiaSans: require("../shared/assets/fonts/SofiaSans-Black.ttf"),
   });
 
   useEffect(() => {

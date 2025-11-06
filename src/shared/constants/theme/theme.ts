@@ -1,4 +1,4 @@
-import { palette } from "./theme.palette";
+import { palette } from "./palette";
 
 const tintColorLight = "#0a7ea4";
 const tintColorDark = "#fff";
@@ -7,6 +7,7 @@ export const Colors = {
   light: {
     text: palette.black,
     background: palette.lightGrey,
+    bgBtn: palette.white,
     tint: tintColorLight,
     icon: "#687076",
     tabIconDefault: "#687076",
@@ -23,6 +24,7 @@ export const Colors = {
     tint: tintColorDark,
     icon: "#9BA1A6",
     tabIconDefault: "#9BA1A6",
+    bgBtn: palette.black,
     tabIconSelected: tintColorDark,
     empty: palette.transparent,
     backgroundDefault: palette.black,
