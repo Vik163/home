@@ -1,6 +1,6 @@
+import { FontFamily, FontSizes, FontWeights } from "@/shared/constants/fonts";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { fluidSize } from "@/shared/lib/fluidLayout";
-import { Fonts, FontSizes, FontWeights } from "@/shared/types/fonts";
 import { Colors, Theme } from "@/shared/types/theme";
 import React, { forwardRef } from "react";
 import {
@@ -19,6 +19,7 @@ export interface InputProps {
   color?: Colors;
   placeholderTextColor?: string;
   multiline?: boolean;
+  family?: FontFamily;
 }
 
 export const TextInput = forwardRef<RNTextInput, InputProps & TextInputProps>(
@@ -37,20 +38,19 @@ export const TextInput = forwardRef<RNTextInput, InputProps & TextInputProps>(
 );
 
 const createStyles =
-  (
-    font: {
-      weight?: FontWeights;
-      lineHeight?: number;
-      size?: FontSizes;
-    } & Fonts
-  ) =>
+  (font: {
+    weight?: FontWeights;
+    lineHeight?: number;
+    size?: FontSizes;
+    family?: FontFamily;
+  }) =>
   (theme: Theme) => {
     let lineHeight = font.lineHeight;
-    const fontSizes = font.fontSizes!;
-    const fontNames = font.fontNames!;
+    const fontSizes = font.size!;
+    const fontNames = font.family!;
 
     if (lineHeight) {
-      lineHeight = lineHeight * fontSizes[font.size ?? "medium"];
+      lineHeight = lineHeight * fontSizes;
     }
     return StyleSheet.create({
       container: {
@@ -58,8 +58,8 @@ const createStyles =
         height: fluidSize(40),
         includeFontPadding: false,
         textAlignVertical: "center",
-        fontFamily: fontNames.roboto[font.weight ?? "medium"],
-        fontSize: fontSizes.medium,
+        fontFamily: fontNames,
+        fontSize: fontSizes,
         color: theme.colors.text,
       },
     });

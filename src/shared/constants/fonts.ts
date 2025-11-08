@@ -2,7 +2,6 @@ import { Platform } from "react-native";
 import { fluidType } from "../lib/fluidLayout";
 
 export enum FontFamily {
-  ROBOTO = "Roboto",
   SOFIA = "SofiaSans",
   ALEGRIA = "Alegreya",
 }
