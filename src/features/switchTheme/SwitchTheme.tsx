@@ -1,5 +1,5 @@
 import { palette } from "@/shared/constants/theme/palette";
-import { useEffectAfterMount } from "@/shared/hooks/useEffectAfterMount";
+import { useEffectAfterMount } from "@/shared/hooks/useEffectMount";
 import { useTheme } from "@/shared/hooks/useTheme";
 import { Font } from "@/shared/ui";
 import { useState } from "react";

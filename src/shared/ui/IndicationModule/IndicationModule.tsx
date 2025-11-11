@@ -8,6 +8,7 @@ import { Font } from "../Font/Font";
 
 interface IndicationModuleProps {
   title: string;
+  value: string;
   width?: number | string;
   height?: number | string;
   flex?: number;
@@ -19,7 +20,7 @@ interface IndicationModuleProps {
 }
 
 export const IndicationModule = (props: IndicationModuleProps) => {
-  const { title } = props;
+  const { title, value } = props;
   const { styles, themeScheme } = useStyles(createStyles());
 
   return (
@@ -34,7 +35,7 @@ export const IndicationModule = (props: IndicationModuleProps) => {
         family={FontFamily.SOFIA}
         lineHeight={0.5}
       >
-        {279}
+        {value}
       </Font>
     </View>
   );

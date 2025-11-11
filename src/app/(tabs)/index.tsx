@@ -1,64 +1,68 @@
-import { client } from "@/shared/lib/mqttBroker";
+import {
+  stateHomeGroupTopics,
+  StateHomeTopics,
+} from "@/shared/constants/mqttTopics";
+import { useEffectMount } from "@/shared/hooks/useEffectMount";
+import { client, mqttConnect } from "@/shared/lib/mqttBroker";
+import { HomeStateTopics } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 
 import * as UI from "shared/ui";
 
 export default function RootPage() {
-  function onConnect() {
-    console.log("onConnect");
-  }
+  const [temp, setTemp] = useState("0");
+  const [humd, setHumd] = useState("0");
+  useEffectMount(() => mqttConnect(stateHomeGroupTopics), []);
 
-  function onConnectionLost(responseObject: {
-    errorCode: number;
-    errorMessage: string;
+  async function onMessageArrived(message: {
+    payloadString: string;
+    destinationName: string;
   }) {
-    console.log("esponseObject.errorCode:", responseObject.errorCode);
-    if (responseObject.errorCode !== 0) {
-      console.log("onConnectionLost:" + responseObject.errorMessage);
+    const value = message.payloadString;
+    const key = message.destinationName
+      .split("/")
+      .slice(-1)[0] as HomeStateTopics;
+
+    switch (key) {
+      case StateHomeTopics.TEMP:
+        setTemp(value);
+        break;
+      case StateHomeTopics.HUMD:
+        setHumd(value);
+        break;
+
+      default:
+        console.log("Error:");
     }
+
+    console.log("key:", key);
+    console.log("topic:" + message.destinationName);
+    console.log("value:" + message.payloadString);
   }
 
-  function onMessageArrived(message: { payloadString: string }) {
-    console.log("onMessageArrived:" + message.payloadString);
-  }
-  function onFailure(message: any) {
-    console.log("onMessageArrived:" + message.errorMessage);
-  }
-
-  client.onConnectionLost = onConnectionLost;
   client.onMessageArrived = onMessageArrived;
-  client.connect({
-    onSuccess: onConnect,
-    useSSL: true,
-    userName: "user_e3bbfff5",
-    password: "HVZj41dP31PZQ",
-    onFailure,
-  });
-
-  function onConnectMqtt() {
-    client.connect({
-      onSuccess: onConnect,
-      useSSL: true,
-      userName: "user_e3bbfff5",
-      password: "HVZj41dP31PZQ",
-      onFailure,
-      keepAliveInterval: 200,
-      reconnect: true,
-    });
-  }
-
-  console.log("client:", client.isConnected());
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
-      <IndicationModule title="Температура в доме" />
-      <IndicationModule title="Напряжение" />
-      <IndicationModule title="Сила тока" />
-      <IndicationModule title="Частота" />
-      <IndicationModule title="Мощность" />
-      <IndicationModule title="Энергия" />
-      <UI.TextButton title={"Обновить"} fontSize={20} onPress={onConnectMqtt} />
+      <IndicationModule title="Температура в доме" value={temp} />
+      <IndicationModule title="Напряжение" value={humd} />
+      <IndicationModule title="Сила тока" value="humidity" />
+      <IndicationModule title="Частота" value="humidity" />
+      <IndicationModule title="Мощность" value="humidity" />
+      <IndicationModule title="Энергия" value="humidity" />
+      <UI.TextButton
+        title={"Обновить"}
+        fontSize={20}
+        // onPress={() => getAllKeys()}
+      />
+
+      <UI.TextButton
+        title={"Отключить"}
+        fontSize={20}
+        onPress={() => client.disconnect()}
+      />
     </UI.Container>
   );
 }

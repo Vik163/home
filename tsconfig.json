@@ -12,7 +12,7 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "src/shared/lib/mqttBroker.js",
-    "src/shared/lib/mqttBroker.js"
+    "src/shared/lib/mqttBroker.ts",
+    "src/shared/lib/mqttBroker.ts"
   ]
 }
