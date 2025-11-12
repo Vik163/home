@@ -25,7 +25,7 @@ export const IndicationModule = (props: IndicationModuleProps) => {
 
   return (
     <View style={styles.container}>
-      <Font alignCenter textTransform="uppercase" family={FontFamily.SOFIA}>
+      <Font alignCenter size={16} family={FontFamily.SOFIA}>
         {title}
       </Font>
       <Font
@@ -33,7 +33,7 @@ export const IndicationModule = (props: IndicationModuleProps) => {
         style={styles.box}
         size={40}
         family={FontFamily.SOFIA}
-        lineHeight={0.5}
+        lineHeight={0.9}
       >
         {value}
       </Font>
@@ -44,24 +44,29 @@ export const IndicationModule = (props: IndicationModuleProps) => {
 const createStyles = (style?: Styles) => (theme: Theme) => {
   return StyleSheet.create({
     container: {
-      flex: 1,
+      // flex: 1,
       alignItems: "center",
-      width: 160,
-      height: 100,
+      width: 150,
+      height: 86,
       gap: 5,
+      borderColor: theme.colors.border,
+      borderWidth: 1,
+      borderRadius: 10,
+      backgroundColor: theme.colors.background,
+      paddingTop: 5,
     },
     box: {
-      width: 130,
-      borderColor: palette.black,
-      borderWidth: 1,
+      width: 140,
+      borderColor: theme.colors.border,
+      borderWidth: 2,
       borderRadius: 10,
       height: 50,
       backgroundColor: theme.colors.background,
       shadowColor: palette.black,
-      shadowOffset: { width: 2, height: 2 },
-      shadowOpacity: 0.55,
+      shadowOffset: { width: 4, height: 4 },
+      shadowOpacity: 0.95,
       shadowRadius: 3.84,
-      elevation: 3,
+      elevation: 5,
     },
     btn: {},
   });

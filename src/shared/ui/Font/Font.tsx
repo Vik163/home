@@ -43,6 +43,7 @@ const createStyles = (font: FontProps & TextProps) => (theme: Theme) => {
       color: theme.colors[font.color ?? "text"],
       textAlign: font.alignCenter ? "center" : font.textAlign,
       textTransform: font.textTransform,
+      letterSpacing: 0.5,
     },
   });
 

@@ -31,15 +31,24 @@ export function Container(props: ContainerProps) {
 }
 
 const createStyles = (style?: Styles) => (theme: Theme) => {
+  console.log("style:", style);
   return StyleSheet.create({
     container: {
       flex: 1,
+      flexDirection: style?.flexDirection || "column",
+      flexWrap: style?.flexWrap || "nowrap",
       backgroundColor: theme.colors.background,
       gap: style?.gap || "unset",
+      rowGap: style?.rowGap,
+      columnGap: style?.columnGap,
       alignItems: style?.alignItems,
       justifyContent: style?.justifyContent,
-      paddingHorizontal: 20,
-      paddingVertical: 30,
+      paddingHorizontal: style?.paddingHorizontal || 20,
+      paddingVertical: style?.paddingVertical || 20,
+      paddingTop: style?.paddingTop,
+      paddingBottom: style?.paddingBottom,
+      paddingLeft: style?.paddingLeft,
+      paddingRight: style?.paddingRight,
     },
   });
 };

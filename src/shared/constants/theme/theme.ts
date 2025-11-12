@@ -17,8 +17,9 @@ export const Colors = {
     // navigation
     primary: palette.azureRadiance,
     card: palette.white,
-    border: palette.alto,
-    notification: palette.redOrange,
+    border: palette.black,
+    error: palette.darkRed,
+    active: palette.darkGreen,
   },
   dark: {
     tint: tintColorDark,
@@ -31,8 +32,9 @@ export const Colors = {
     primary: palette.azureRadiance,
     background: palette.black,
     card: palette.codGray,
-    text: palette.iron,
-    border: palette.shark,
-    notification: palette.redOrange,
+    text: palette.lightBlue,
+    border: palette.lightBlue,
+    error: palette.lightRed,
+    active: palette.lightGreen,
   },
 };

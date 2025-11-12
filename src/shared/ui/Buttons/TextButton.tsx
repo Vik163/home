@@ -1,5 +1,4 @@
 import { FontFamily } from "@/shared/constants/fonts";
-import { palette } from "@/shared/constants/theme/palette";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { fluidSize } from "@/shared/lib/fluidLayout";
 import { Colors, Theme } from "@/shared/types/theme";
@@ -52,11 +51,11 @@ const createStyles = () => (theme: Theme) => {
   return StyleSheet.create({
     container: {
       width: "100%",
-      height: fluidSize(44, "vertical"),
+      height: fluidSize(40, "vertical"),
       borderRadius: fluidSize(10),
       justifyContent: "center",
       alignItems: "center",
-      borderColor: palette.black,
+      borderColor: theme.colors.border,
       borderWidth: 1,
       backgroundColor: theme.colors.bgBtn,
     },

@@ -50,8 +50,11 @@ export const client = new Paho.MQTT.Client(
   options.path
 );
 
+client.onMessageArrived = onMessageArrived;
+client.onConnectionLost = onConnectionLost;
+
 // подписка на топик
- function mqttSubscribeTopic(topic: string) {
+function mqttSubscribeTopic(topic: string) {
   client.subscribe(topic, { qos: 1 });
 }
 
@@ -91,8 +94,6 @@ async function onMessageArrived(message: {
     console.log("value:" + message.payloadString); // значение
   }
 
-
-
 const unSubscribeTopic = () => {
   // client.unsubscribe(subscribedTopic);
 };
@@ -103,10 +104,6 @@ const sendMessage = () => {
   // message.destinationName = subscribedTopic;
   // client.send(message);
 };
-
-client.onMessageArrived = onMessageArrived;
-client.onConnectionLost = onConnectionLost;
-
 
 // Нужно установить соединение и подписаться на рассылку
 export function mqttConnect(topic: string) {
