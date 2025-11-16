@@ -16,6 +16,11 @@ npx expo install expo-dev-client
 
 ## Сборка
 
+### Локальная
+
+`npx expo run:android` - создаётся папка android с проектом
+`--no-build-cache` - не должен кешироваться
+
 ### [Create a development build on EAS](https://docs.expo.dev/develop/development-builds/create-a-build/)
 
 Добавляется проект в [expo](<(https://expo.dev/accounts/vik163/projects)>)

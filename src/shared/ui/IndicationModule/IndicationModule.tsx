@@ -21,7 +21,7 @@ interface IndicationModuleProps {
 
 export const IndicationModule = (props: IndicationModuleProps) => {
   const { title, value } = props;
-  const { styles, themeScheme } = useStyles(createStyles());
+  const { styles } = useStyles(createStyles());
 
   return (
     <View style={styles.container}>

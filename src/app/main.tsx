@@ -7,17 +7,12 @@ import { Button, StyleSheet, Text } from "react-native";
 import * as UI from "shared/ui";
 
 export default function MainPage() {
-  const { goToPush, goToLogin } = useNavigationActions();
+  const { goToLogin } = useNavigationActions();
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <Text>{"Home"}</Text>
-      <Button
-        title={"Push"}
-        onPress={() => {
-          goToPush();
-        }}
-      />
+
       <Button
         title={"Login"}
         onPress={() => {

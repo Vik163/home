@@ -12,10 +12,6 @@ export function useNavigationActions() {
     navigation.dispatch(StackActions.replace(ScreenRoutes.Main));
   }
 
-  function goToPush() {
-    navigation.dispatch(StackActions.replace(ScreenRoutes.Push));
-  }
-
   function goToLogin() {
     navigation.dispatch(StackActions.replace(NavigatorRoutes.Login));
   }
@@ -44,7 +40,6 @@ export function useNavigationActions() {
     goToMain,
     resetMain,
     goToLogin,
-    goToPush,
     goTo: navigation.navigate,
     goBack: navigation.goBack,
   };

@@ -3,8 +3,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 
-import { useTheme } from "@/shared/hooks/useTheme";
 import { useEffect } from "react";
+import { useColorScheme } from "react-native";
 import ThemeProvider from "./providers/ThemeProvider/ThemeProvider";
 
 SplashScreen.preventAutoHideAsync();
@@ -14,8 +14,8 @@ export const unstable_settings = {
 };
 
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
   //* Получить настройки с сервера
-  const { themeScheme } = useTheme();
   const [loaded, error] = useFonts({
     Alegreya: require("../shared/assets/fonts/Alegreya-Black.ttf"),
     SofiaSans: require("../shared/assets/fonts/SofiaSans-Black.ttf"),
@@ -32,9 +32,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider initial={themeScheme}>
+    <ThemeProvider initial={colorScheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="main" options={{ headerShown: false }} />
         <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "Modal" }}

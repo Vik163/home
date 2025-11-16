@@ -5,5 +5,4 @@ export enum NavigatorRoutes {
 
 export enum ScreenRoutes {
   Main = "index",
-  Push = "push",
 }

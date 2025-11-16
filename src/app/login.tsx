@@ -6,16 +6,10 @@ import { Button, StyleSheet } from "react-native";
 import * as UI from "shared/ui";
 
 const Login = () => {
-  const { goToPush, goToMain } = useNavigationActions();
+  const { goToMain } = useNavigationActions();
 
   return (
     <UI.Container>
-      <Button
-        title={"push"}
-        onPress={() => {
-          goToPush();
-        }}
-      />
       <Button
         title={"main"}
         onPress={() => {

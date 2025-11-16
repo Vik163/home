@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 10,
     rowGap: 18,
-    columnGap: 25,
+    columnGap: 20,
     flexDirection: "row",
     flexWrap: "wrap",
     alignItems: "center",
