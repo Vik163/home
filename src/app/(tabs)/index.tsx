@@ -22,6 +22,10 @@ export default function RootPage() {
   const [power, setPower] = useState("0");
   const [energy, setEnergy] = useState("0");
   const [pf, setPf] = useState("0");
+  const [max, setMax] = useState("0");
+  const [min, setMin] = useState("0");
+  const [threshold, setThreshold] = useState("0");
+  const [average, setAverage] = useState("0");
   const [status, setStatus] = useState("Нет связи с брокером");
   const { theme } = useTheme();
   useEffectMount(() => mqttConnect(stateHomeGroupTopics), []);
@@ -68,6 +72,18 @@ export default function RootPage() {
       case StateHomeTopics.PF:
         setPf(value);
         break;
+      case StateHomeTopics.AVERAGE:
+        setAverage(value);
+        break;
+      case StateHomeTopics.THRESHOLD:
+        setThreshold(value);
+        break;
+      case StateHomeTopics.MAX:
+        setMax(value);
+        break;
+      case StateHomeTopics.MIN:
+        setMin(value);
+        break;
       case StateHomeTopics.STATUS:
         getStatus(value);
         break;
@@ -105,9 +121,10 @@ export default function RootPage() {
       <IndicationModule title="Мощность" value={power} />
       <IndicationModule title="Энергия" value={energy} />
       <IndicationModule title="cos φ" value={pf} />
-      <IndicationModule title="U min/сутки" value={pf} />
-      <IndicationModule title="U max/сутки" value={pf} />
-      <IndicationModule title="U < 190 ч/сутки" value={pf} />
+      <IndicationModule title="U min/сутки" value={min} />
+      <IndicationModule title="U max/сутки" value={max} />
+      <IndicationModule title="U среднее/сутки" value={average} />
+      <IndicationModule title="U < 190 ч/сутки" value={threshold} />
 
       <UI.TextButton
         title={"Обновить"}

@@ -31,7 +31,6 @@ export function Container(props: ContainerProps) {
 }
 
 const createStyles = (style?: Styles) => (theme: Theme) => {
-  console.log("style:", style);
   return StyleSheet.create({
     container: {
       flex: 1,

@@ -14,5 +14,9 @@ export enum StateHomeTopics {
   FREQUENCY = "frequency",
   ENERGY = "energy",
   PF = "pf",
+  AVERAGE = "average",
+  THRESHOLD = "threshold",
+  MAX = "max",
+  MIN = "min",
   STATUS = "status",
 }

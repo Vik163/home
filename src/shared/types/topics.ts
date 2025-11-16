@@ -7,4 +7,8 @@ export type HomeStateTopics =
   | "frequency"
   | "energy"
   | "pf"
+  | "max"
+  | "min"
+  | "threshold"
+  | "average"
   | "status";
