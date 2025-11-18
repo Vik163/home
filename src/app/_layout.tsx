@@ -17,7 +17,6 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   //* Получить настройки с сервера
   const [loaded, error] = useFonts({
-    Alegreya: require("../shared/assets/fonts/Alegreya-Black.ttf"),
     SofiaSans: require("../shared/assets/fonts/SofiaSans-Black.ttf"),
   });
 

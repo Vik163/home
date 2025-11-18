@@ -3,7 +3,6 @@ import { fluidType } from "../lib/fluidLayout";
 
 export enum FontFamily {
   SOFIA = "SofiaSans",
-  ALEGRIA = "Alegreya",
 }
 
 export enum FontWeights {

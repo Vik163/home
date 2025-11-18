@@ -14,9 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./src/shared/assets/images/android-icon-foreground.png",
-        "backgroundImage": "./src/shared/assets/images/android-icon-background.png",
-        "monochromeImage": "./src/shared/assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./src/shared/assets/images/android-icon-foreground.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -24,8 +22,7 @@
       "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
-      "output": "static",
-      "favicon": "./src/shared/assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
@@ -33,7 +30,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/shared/assets/images/splash-icon.png",
+          "image": "./src/shared/assets/images/android-icon-background.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -45,10 +42,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./src/shared/assets/fonts/Alegreya-Black.ttf",
-            "./src/shared/assets/fonts/SofiaSans-Black.ttf"
-          ],
+          "fonts": ["./src/shared/assets/fonts/SofiaSans-Black.ttf"],
           "android": {
             "fonts": []
           },

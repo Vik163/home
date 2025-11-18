@@ -5,12 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29500e21-2873-405c-a652-f397ce829c88" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/(tabs)/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/types/topics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/types/topics.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/Layouts/Container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/Layouts/Container.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/bg-dark.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/assets/images/bg-dark.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/internet.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/assets/images/internet.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/partial-react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo@3x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/constants/theme/palette.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/constants/theme/palette.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/Buttons/TextButton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/ui/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

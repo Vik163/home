@@ -1,16 +1,14 @@
 import internet from "@/shared/assets/images/internet.png";
-import {
-  stateHomeGroupTopics,
-  StateHomeTopics,
-} from "@/shared/constants/mqttTopics";
-import { useEffectMount } from "@/shared/hooks/useEffectMount";
-import { useTheme } from "@/shared/hooks/useTheme";
-import { brokerConnected, client, mqttConnect } from "@/shared/lib/mqttBroker";
+import link from "@/shared/assets/images/link.png";
+import { StateHomeTopics } from "@/shared/constants/mqttTopics";
+import { useNavigationActions } from "@/shared/hooks/useNavigationActions";
+import { useStyles } from "@/shared/hooks/useStyles";
+import { brokerConnected, client } from "@/shared/lib/mqttBroker";
+import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
 import { useState } from "react";
-import { Image, StyleSheet, Text, TextStyle, View } from "react-native";
-
+import { Image, StyleSheet, Text, View } from "react-native";
 import * as UI from "shared/ui";
 
 export default function RootPage() {
@@ -27,8 +25,10 @@ export default function RootPage() {
   const [threshold, setThreshold] = useState("0");
   const [average, setAverage] = useState("0");
   const [status, setStatus] = useState("Нет связи с брокером");
-  const { theme } = useTheme();
-  useEffectMount(() => mqttConnect(stateHomeGroupTopics), []);
+  const { styles, theme } = useStyles(createStyles());
+
+  const { goToLogin } = useNavigationActions();
+  // useEffectMount(() => mqttConnect(stateHomeGroupTopics), []);
 
   const getStatus = (value: string) => {
     if (!brokerConnected()) {
@@ -97,21 +97,20 @@ export default function RootPage() {
 
   client.onMessageArrived = onMessageArrived;
 
-  const stylesStatusText: TextStyle = {
-    width: "100%",
-    textAlign: "center",
-    color:
-      status === "Связь установлена" ? theme.colors.active : theme.colors.error,
-  };
-
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <View style={styles.status}>
         {status !== "Связь установлена" ? (
-          <Text style={stylesStatusText}>{status}</Text>
+          <Text style={styles.statusText}>{status}</Text>
         ) : (
           <Image style={styles.img} source={internet} />
         )}
+        <UI.Button
+          stylesBtn={styles.link}
+          icon={link}
+          sizeIcon={20}
+          onPress={() => goToLogin()}
+        />
       </View>
       <IndicationModule title="Температура" value={temp} />
       <IndicationModule title="Влажность" value={humd} />
@@ -126,34 +125,63 @@ export default function RootPage() {
       <IndicationModule title="U среднее/сутки" value={average} />
       <IndicationModule title="U < 190 ч/сутки" value={threshold} />
 
-      <UI.TextButton
-        title={"Обновить"}
-        fontSize={20}
-
-        // onPress={() => getAllKeys()}
-      />
+      {status !== "Связь установлена" && (
+        <UI.Button
+          stylesBtn={styles.btn}
+          title={"Установить соединение"}
+          fontSize={16}
+          icon={internet}
+          sizeIcon={20}
+          // onPress={() => mqttConnect(stateHomeGroupTopics)}
+        />
+      )}
     </UI.Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 10,
-    rowGap: 18,
-    columnGap: 20,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  status: {
-    width: "100%",
-    display: "flex",
-    marginLeft: 30,
-    height: 25,
-  },
-  img: {
-    width: 25,
-    height: 25,
-  },
-});
+const createStyles = () => (theme: Theme) => {
+  return StyleSheet.create({
+    container: {
+      rowGap: 18,
+      columnGap: 20,
+      flexDirection: "row",
+      flexWrap: "wrap",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    status: {
+      width: "90%",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 20,
+      marginTop: 5,
+      height: 28,
+    },
+    statusText: {
+      textAlign: "center",
+      color: theme.colors.error,
+    },
+    img: {
+      width: 25,
+      height: 25,
+    },
+    link: {
+      borderColor: theme.colors.border,
+      borderWidth: 1,
+      borderRadius: 10,
+      width: 40,
+    },
+
+    btn: {
+      marginTop: 5,
+      gap: 10,
+      borderColor: theme.colors.border,
+      borderWidth: 1,
+      borderRadius: 10,
+      width: "90%",
+      height: 35,
+    },
+  });
+};
