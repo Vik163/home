@@ -2,8 +2,6 @@ export const palette = {
   transparent: "transparent",
   black: "#000000",
   white: "#FFFFFF",
-  azureRadiance: "#007AFF",
-  concrete: "#F2F2F2",
   shark: "#1C1C1E",
   alto: "#D8D8D8",
   lightRed: "#FF3B30",
@@ -12,6 +10,7 @@ export const palette = {
   lightGrey: "#EDEDED",
   iron: "#E5E5E7",
   lightBlue: "#6E9AC1",
+  darkBlue: "#184F80",
   lightGreen: "#56FF18",
   darkGreen: "#238500",
 };

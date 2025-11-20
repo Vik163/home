@@ -9,10 +9,6 @@ import ThemeProvider from "./providers/ThemeProvider/ThemeProvider";
 
 SplashScreen.preventAutoHideAsync();
 
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   //* Получить настройки с сервера
@@ -34,12 +30,8 @@ export default function RootLayout() {
     <ThemeProvider initial={colorScheme}>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="login" options={{ headerShown: false }} />
         <Stack.Screen name="main" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
-        />
+        <Stack.Screen name="modal" options={{ headerShown: false }} />
       </Stack>
       <StatusBar hidden />
     </ThemeProvider>

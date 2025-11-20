@@ -12,13 +12,7 @@
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
-    "@react-navigation/bottom-tabs": "^7.4.0",
-    "@react-navigation/elements": "^2.6.3",
-    "@react-navigation/native": "^7.1.19",
-    "@react-navigation/native-stack": "^7.6.1",
-    "@reduxjs/toolkit": "^2.9.2",
     "babel-plugin-module-resolver": "^5.0.2",
-    "compose-function": "^3.0.3",
     "expo": "~54.0.20",
     "expo-constants": "~18.0.10",
     "expo-dev-client": "~6.0.16",
@@ -48,13 +42,10 @@
     "react-native-switch-toggles": "^1.0.1",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "^0.5.1",
-    "react-redux": "^9.2.0",
     "react-stately": "^3.39.0",
-    "redux": "^5.0.1",
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@types/compose-function": "^0.0.33",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",

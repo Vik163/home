@@ -1,14 +1,27 @@
+import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import internet from "@/shared/assets/images/internet.png";
 import link from "@/shared/assets/images/link.png";
-import { StateHomeTopics } from "@/shared/constants/mqttTopics";
-import { useNavigationActions } from "@/shared/hooks/useNavigationActions";
+import {
+  loginTopic,
+  stateHomeGroupTopics,
+  StateHomeTopics,
+  statusTopic,
+} from "@/shared/constants/mqttTopics";
+import { useEffectMount } from "@/shared/hooks/useEffectMount";
 import { useStyles } from "@/shared/hooks/useStyles";
-import { brokerConnected, client } from "@/shared/lib/mqttBroker";
+import {
+  brokerConnected,
+  client,
+  mqttConnect,
+  mqttSubscribeTopic,
+  sendMessage,
+} from "@/shared/lib/mqttBroker";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
-import { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import * as UI from "shared/ui";
 
 export default function RootPage() {
@@ -26,73 +39,76 @@ export default function RootPage() {
   const [average, setAverage] = useState("0");
   const [status, setStatus] = useState("Нет связи с брокером");
   const { styles, theme } = useStyles(createStyles());
+  const router = useRouter();
 
-  const { goToLogin } = useNavigationActions();
-  // useEffectMount(() => mqttConnect(stateHomeGroupTopics), []);
+  useEffectMount(() => {
+    if (!client.isConnected()) mqttConnect(stateHomeGroupTopics);
+  }, []);
 
-  const getStatus = (value: string) => {
-    if (!brokerConnected()) {
-      setStatus("Нет связи с брокером");
+  useEffect(() => {
+    if (brokerConnected()) {
+      mqttSubscribeTopic(statusTopic);
+      sendMessage(loginTopic, "no");
     }
-    if (brokerConnected() && value === "offlin") setStatus("Нет связи с домом");
-    if (brokerConnected() && value === "onlin") setStatus("Связь установлена");
-  };
+  }, [brokerConnected()]);
 
   async function onMessageArrived(message: {
     payloadString: string;
     destinationName: string;
   }) {
-    const value = message.payloadString.slice(0, -1);
+    const value = message.payloadString;
     const key = message.destinationName
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
 
+    function removeLastNum(num: string) {
+      return num.slice(0, -1);
+    }
+
     switch (key) {
       case StateHomeTopics.TEMP:
-        setTemp(value);
+        setTemp(removeLastNum(value));
         break;
       case StateHomeTopics.HUMD:
-        setHumd(value);
+        setHumd(removeLastNum(value));
         break;
       case StateHomeTopics.VOLT:
-        setVolt(value);
+        setVolt(removeLastNum(value));
         break;
       case StateHomeTopics.CURRENT:
-        setCurrent(value);
+        setCurrent(removeLastNum(value));
         break;
       case StateHomeTopics.FREQUENCY:
-        setFrequency(value);
+        setFrequency(removeLastNum(value));
         break;
       case StateHomeTopics.POWER:
-        setPower(value);
+        setPower(removeLastNum(value));
         break;
       case StateHomeTopics.ENERGY:
-        setEnergy(value);
+        setEnergy(removeLastNum(value));
         break;
       case StateHomeTopics.PF:
-        setPf(value);
+        setPf(removeLastNum(value));
         break;
       case StateHomeTopics.AVERAGE:
-        setAverage(value);
+        setAverage(removeLastNum(value));
         break;
       case StateHomeTopics.THRESHOLD:
-        setThreshold(value);
+        setThreshold(removeLastNum(value));
         break;
       case StateHomeTopics.MAX:
-        setMax(value);
+        setMax(removeLastNum(value));
         break;
       case StateHomeTopics.MIN:
-        setMin(value);
+        setMin(removeLastNum(value));
         break;
       case StateHomeTopics.STATUS:
-        getStatus(value);
+        setStatus(value);
         break;
 
       default:
         console.log("Error:");
     }
-
-    // console.log("topic:" + message.destinationName);
   }
 
   client.onMessageArrived = onMessageArrived;
@@ -100,16 +116,12 @@ export default function RootPage() {
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <View style={styles.status}>
-        {status !== "Связь установлена" ? (
-          <Text style={styles.statusText}>{status}</Text>
-        ) : (
-          <Image style={styles.img} source={internet} />
-        )}
+        <StatusInfo value={status} />
         <UI.Button
           stylesBtn={styles.link}
           icon={link}
           sizeIcon={20}
-          onPress={() => goToLogin()}
+          onPress={() => router.navigate("/modal")}
         />
       </View>
       <IndicationModule title="Температура" value={temp} />
@@ -125,14 +137,14 @@ export default function RootPage() {
       <IndicationModule title="U среднее/сутки" value={average} />
       <IndicationModule title="U < 190 ч/сутки" value={threshold} />
 
-      {status !== "Связь установлена" && (
+      {status !== "online" && (
         <UI.Button
           stylesBtn={styles.btn}
           title={"Установить соединение"}
           fontSize={16}
           icon={internet}
           sizeIcon={20}
-          // onPress={() => mqttConnect(stateHomeGroupTopics)}
+          onPress={() => mqttConnect(stateHomeGroupTopics)}
         />
       )}
     </UI.Container>
@@ -158,14 +170,6 @@ const createStyles = () => (theme: Theme) => {
       paddingHorizontal: 20,
       marginTop: 5,
       height: 28,
-    },
-    statusText: {
-      textAlign: "center",
-      color: theme.colors.error,
-    },
-    img: {
-      width: 25,
-      height: 25,
     },
     link: {
       borderColor: theme.colors.border,

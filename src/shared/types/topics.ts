@@ -11,4 +11,5 @@ export type HomeStateTopics =
   | "min"
   | "threshold"
   | "average"
-  | "status";
+  | "status"
+  | "login";

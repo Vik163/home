@@ -3,9 +3,9 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { Colors } from "@/shared/constants/theme/theme";
 import { useTheme } from "@/shared/hooks/useTheme";
-import { ThemedText } from "@/shared/lib/themed-text";
 import { ThemedView } from "@/shared/lib/themed-view";
 import { IconSymbol } from "@/shared/ui/IconSymbol/icon-symbol";
+import { Font } from "../Font/Font";
 
 export function Collapsible({
   children,
@@ -29,7 +29,7 @@ export function Collapsible({
           style={{ transform: [{ rotate: isOpen ? "90deg" : "0deg" }] }}
         />
 
-        <ThemedText type="defaultSemiBold">{title}</ThemedText>
+        <Font>{title}</Font>
       </TouchableOpacity>
       {isOpen && <ThemedView style={styles.content}>{children}</ThemedView>}
     </ThemedView>

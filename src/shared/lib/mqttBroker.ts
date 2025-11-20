@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import init from "react_native_mqtt";
-import { statusTopic } from "../constants/mqttTopics";
+import { loginTopic } from "../constants/mqttTopics";
 
 init({
   size: 10000,
@@ -33,7 +33,7 @@ export function mqttSubscribeTopic(topic: string) {
 
 function onConnect(topic: string) {
   console.log("onConnect");
-  mqttSubscribeTopic(statusTopic);
+  mqttSubscribeTopic(loginTopic);
   mqttSubscribeTopic(topic);
 }
 
@@ -59,11 +59,18 @@ const unSubscribeTopic = () => {
   // client.unsubscribe(subscribedTopic);
 };
 
-const sendMessage = () => {
+export const sendMessageId = (subscribedTopic: string, text: string) => {
   //@ts-ignore
-  // var message = new Paho.MQTT.Message(options.id + ":" + message);
-  // message.destinationName = subscribedTopic;
-  // client.send(message);
+  var message = new Paho.MQTT.Message(options.id + ":" + text);
+  message.destinationName = subscribedTopic;
+  client.send(message);
+};
+
+export const sendMessage = (subscribedTopic: string, text: string) => {
+  //@ts-ignore
+  var message = new Paho.MQTT.Message(text);
+  message.destinationName = subscribedTopic;
+  client.send(message);
 };
 
 export function mqttConnect(topic: string) {

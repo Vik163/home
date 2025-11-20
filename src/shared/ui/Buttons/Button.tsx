@@ -49,6 +49,27 @@ export function Button(props: ButtonProps & TouchableOpacityProps) {
     props;
   const { styles, theme } = useStyles(createStyles(stylesBtn!, reverse));
 
+  const btnContent = (
+    <View style={styles.view as StyleProp<ViewStyle>}>
+      {icon && (
+        <Image style={{ width: sizeIcon, height: sizeIcon }} source={icon} />
+      )}
+      {title &&
+        (loading ? (
+          <ActivityIndicator testID="loading" />
+        ) : (
+          <Font
+            weight={700}
+            color={props.fontColor ?? "text"}
+            size={props.fontSize}
+            alignCenter
+          >
+            {title ?? ""}
+          </Font>
+        ))}
+    </View>
+  );
+
   return (
     <TouchableOpacity
       disabled={disabled || loading}
@@ -56,24 +77,7 @@ export function Button(props: ButtonProps & TouchableOpacityProps) {
       style={styles.container as StyleProp<ViewStyle>}
       {...props}
     >
-      <View style={styles.view as StyleProp<ViewStyle>}>
-        {icon && (
-          <Image style={{ width: sizeIcon, height: sizeIcon }} source={icon} />
-        )}
-        {title &&
-          (loading ? (
-            <ActivityIndicator testID="loading" />
-          ) : (
-            <Font
-              weight={700}
-              color={props.fontColor ?? "text"}
-              size={props.fontSize}
-              alignCenter
-            >
-              {title ?? ""}
-            </Font>
-          ))}
-      </View>
+      {btnContent}
     </TouchableOpacity>
   );
 }
