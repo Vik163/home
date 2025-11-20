@@ -18,15 +18,13 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.vik163.home",
-      "googleServicesFile": "./android/app/google-services.json"
+      "package": "com.vik163.home"
     },
     "web": {
       "output": "static"
     },
     "plugins": [
       "expo-router",
-      "expo-notifications",
       [
         "expo-splash-screen",
         {

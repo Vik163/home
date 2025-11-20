@@ -2,11 +2,11 @@
 
 ## npm
 
-`npm cache clean --force`
+`npm cache clear --force`
 
 ## expo
 
-`npx expo start --clean`
+`npx expo start --clear`
 
 ## gradle
 
@@ -14,8 +14,7 @@
    `./gradlew --stop`
 
 2. удалить
-   `rm -rf ~/.gradle/caches/`  
-   `rm -rf ~/.gradle/caches/build-cache-*`
+   `rm -rf ~/.gradle/caches/`
 
 ## android studio avd (эмулятор)
 

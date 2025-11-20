@@ -46,6 +46,11 @@ eas build:dev
 
 ## Создание apk
 
+### Локальная сборка
+
+`npx expo run:android --variant release`  
+apk будет в `...\android\app\build\outputs\apk\release`
+
 [Локальная релизная сборка (также известная как производственная сборка)](https://docs.expo.dev/guides/local-app-production/)
 
 ### Сборка с помощью EAS Build
