@@ -2,7 +2,6 @@ import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import internet from "@/shared/assets/images/internet.png";
 import link from "@/shared/assets/images/link.png";
 import {
-  loginTopic,
   stateHomeGroupTopics,
   StateHomeTopics,
   statusTopic,
@@ -14,10 +13,10 @@ import {
   client,
   mqttConnect,
   mqttSubscribeTopic,
-  sendMessage,
 } from "@/shared/lib/mqttBroker";
+import { ArduinoData } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
-import { HomeStateTopics } from "@/shared/types/topics";
+import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
@@ -25,21 +24,53 @@ import { StyleSheet, View } from "react-native";
 import * as UI from "shared/ui";
 
 export default function RootPage() {
-  const [temp, setTemp] = useState("000.0");
-  const [humd, setHumd] = useState("000.0");
-  const [volt, setVolt] = useState("000.0");
-  const [current, setCurrent] = useState("000.0");
-  const [frequency, setFrequency] = useState("0");
-  const [power, setPower] = useState("0");
-  const [energy, setEnergy] = useState("0");
-  const [pf, setPf] = useState("0");
+  const [temp, setTemp] = useState("0.0");
+  const [humd, setHumd] = useState("0.0");
+  const [volt, setVolt] = useState("0.0");
+  const [current, setCurrent] = useState("0.0");
+  const [frequency, setFrequency] = useState("0.0");
+  const [power, setPower] = useState("0.0");
+  const [energy, setEnergy] = useState("0.0");
+  const [pf, setPf] = useState("0.0");
   const [max, setMax] = useState("0");
   const [min, setMin] = useState("0");
   const [threshold, setThreshold] = useState("0");
-  const [average, setAverage] = useState("0");
-  const [status, setStatus] = useState("Нет связи с брокером");
+  const [average, setAverage] = useState("0.0");
+  const [status, setStatus] = useState<StatusState>("offline");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
+
+  function removeLastNum(num: string, k: number) {
+    return num.slice(0, -k);
+  }
+
+  async function getStatData() {
+    fetch("https://photosalon.online/api/ard")
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((data: ArduinoData) => {
+        const min = Math.min(...data.min);
+        setMin(min.toString());
+
+        const max = Math.max(...data.max);
+        setMax(max.toString());
+
+        const sum = data.avr.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        );
+        const avr = (sum / data.avr.length).toString();
+        setAverage(avr.slice(0, 3));
+
+        const sumThd = data.thd.reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          0
+        );
+        const minutes = ((sumThd * 5) / 60).toString();
+        setThreshold(minutes.slice(0, 3));
+      });
+  }
 
   useEffectMount(() => {
     if (!client.isConnected()) mqttConnect(stateHomeGroupTopics);
@@ -48,8 +79,9 @@ export default function RootPage() {
   useEffect(() => {
     if (brokerConnected()) {
       mqttSubscribeTopic(statusTopic);
-      sendMessage(loginTopic, "no");
     }
+
+    getStatData();
   }, [brokerConnected()]);
 
   async function onMessageArrived(message: {
@@ -61,49 +93,45 @@ export default function RootPage() {
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
 
-    function removeLastNum(num: string) {
-      return num.slice(0, -1);
-    }
-
     switch (key) {
       case StateHomeTopics.TEMP:
-        setTemp(removeLastNum(value));
+        setTemp(removeLastNum(value, 1));
         break;
       case StateHomeTopics.HUMD:
-        setHumd(removeLastNum(value));
+        setHumd(removeLastNum(value, 3));
         break;
       case StateHomeTopics.VOLT:
-        setVolt(removeLastNum(value));
+        setVolt(removeLastNum(value, 3));
         break;
       case StateHomeTopics.CURRENT:
-        setCurrent(removeLastNum(value));
+        setCurrent(removeLastNum(value, 1));
         break;
       case StateHomeTopics.FREQUENCY:
-        setFrequency(removeLastNum(value));
+        setFrequency(Math.floor(+value).toString());
         break;
       case StateHomeTopics.POWER:
-        setPower(removeLastNum(value));
+        setPower((+removeLastNum(value, 3) / 1000).toString().slice(0, 4));
         break;
       case StateHomeTopics.ENERGY:
-        setEnergy(removeLastNum(value));
+        setEnergy(removeLastNum(value, 1));
         break;
       case StateHomeTopics.PF:
-        setPf(removeLastNum(value));
+        setPf(removeLastNum(value, 1));
         break;
       case StateHomeTopics.AVERAGE:
-        setAverage(removeLastNum(value));
+        setAverage(removeLastNum(value, 3));
         break;
       case StateHomeTopics.THRESHOLD:
-        setThreshold(removeLastNum(value));
+        setThreshold(removeLastNum(value, 3));
         break;
       case StateHomeTopics.MAX:
-        setMax(removeLastNum(value));
+        setMax(removeLastNum(value, 3));
         break;
       case StateHomeTopics.MIN:
-        setMin(removeLastNum(value));
+        setMin(removeLastNum(value, 3));
         break;
       case StateHomeTopics.STATUS:
-        setStatus(value);
+        setStatus(value as StatusState);
         break;
 
       default:
@@ -124,29 +152,33 @@ export default function RootPage() {
           onPress={() => router.navigate("/modal")}
         />
       </View>
-      <IndicationModule title="Температура" value={temp} />
-      <IndicationModule title="Влажность" value={humd} />
-      <IndicationModule title="Напряжение" value={volt} />
-      <IndicationModule title="Сила тока" value={current} />
-      <IndicationModule title="Частота" value={frequency} />
-      <IndicationModule title="Мощность" value={power} />
-      <IndicationModule title="Энергия" value={energy} />
+      <IndicationModule title="Температура °C" value={temp} />
+      <IndicationModule title="Влажность %" value={humd} />
+      <IndicationModule title="Напряжение V" value={volt} />
+      <IndicationModule title="Сила тока A" value={current} />
+      <IndicationModule title="Частота Hz" value={frequency} />
+      <IndicationModule title="Мощность kW" value={power} />
+      <IndicationModule title="Энергия kW/h" value={energy} />
       <IndicationModule title="cos φ" value={pf} />
-      <IndicationModule title="U min/сутки" value={min} />
-      <IndicationModule title="U max/сутки" value={max} />
-      <IndicationModule title="U среднее/сутки" value={average} />
-      <IndicationModule title="U < 190 ч/сутки" value={threshold} />
+      <IndicationModule title="Min v/сутки" value={min} />
+      <IndicationModule title="Max v/сутки" value={max} />
+      <IndicationModule title="Avr v/сутки" value={average} />
+      <IndicationModule title="V < 190 м/сутки" value={threshold} />
 
-      {status !== "online" && (
-        <UI.Button
-          stylesBtn={styles.btn}
-          title={"Установить соединение"}
-          fontSize={16}
-          icon={internet}
-          sizeIcon={20}
-          onPress={() => mqttConnect(stateHomeGroupTopics)}
-        />
-      )}
+      <UI.Button
+        stylesBtn={styles.btn}
+        title={
+          !brokerConnected() ? "Установить соединение" : "Обновить статистику"
+        }
+        fontSize={16}
+        icon={internet}
+        sizeIcon={20}
+        onPress={
+          !brokerConnected()
+            ? () => mqttConnect(stateHomeGroupTopics)
+            : () => getStatData()
+        }
+      />
     </UI.Container>
   );
 }

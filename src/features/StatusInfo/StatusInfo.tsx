@@ -17,7 +17,7 @@ import {
 type Styles = ViewStyle | TextStyle | ImageStyle;
 
 export default function StatusInfo(props: {
-  value: string;
+  value: "online" | "offline";
   stylesStatus?: Styles;
 }) {
   const { value, stylesStatus } = props;

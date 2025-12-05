@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import init from "react_native_mqtt";
-import { loginTopic } from "../constants/mqttTopics";
 
 init({
   size: 10000,
@@ -33,7 +32,6 @@ export function mqttSubscribeTopic(topic: string) {
 
 function onConnect(topic: string) {
   console.log("onConnect");
-  mqttSubscribeTopic(loginTopic);
   mqttSubscribeTopic(topic);
 }
 

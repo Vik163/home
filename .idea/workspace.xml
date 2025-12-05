@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29500e21-2873-405c-a652-f397ce829c88" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/bg-dark.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/assets/images/bg-dark.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/favicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/internet.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/assets/images/internet.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/partial-react-logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo@2x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/assets/images/react-logo@3x.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/constants/theme/palette.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/constants/theme/palette.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/Buttons/TextButton.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/ui/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/ui/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/features/StatusInfo/StatusInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/StatusInfo/StatusInfo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/lib/mqttBroker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/lib/mqttBroker.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/types/topics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/types/topics.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +28,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
@@ -39,19 +40,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "AnalyzeApkAction.lastApkPath": "C:/arduino/home/android/app/build/outputs/apk/release/app-release.apk",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "git-widget-placeholder": "main",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="29500e21-2873-405c-a652-f397ce829c88" name="Changes" comment="" />

@@ -2,28 +2,23 @@ import { Link, useRouter } from "expo-router";
 import { StyleSheet, TextInput } from "react-native";
 
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
-import {
-  loginTopic,
-  StateHomeTopics,
-  statusTopic,
-} from "@/shared/constants/mqttTopics";
+import { StateHomeTopics, statusTopic } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
   brokerConnected,
   client,
   mqttSubscribeTopic,
-  sendMessageId,
 } from "@/shared/lib/mqttBroker";
 import { ThemedView } from "@/shared/lib/themed-view";
 import { Theme } from "@/shared/types/theme";
-import { HomeStateTopics } from "@/shared/types/topics";
+import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import Loader from "@/shared/ui/Loader/Loader";
 import { useEffect, useState } from "react";
 
 export default function ModalScreen() {
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState("Нет связи с брокером");
+  const [status, setStatus] = useState<StatusState>("offline");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
@@ -32,7 +27,7 @@ export default function ModalScreen() {
   }, [brokerConnected()]);
 
   function onSubmit() {
-    sendMessageId(loginTopic, pass);
+    // sendMessageId(loginTopic, pass);
     setLoading(true);
   }
 
@@ -44,11 +39,11 @@ export default function ModalScreen() {
     const key = message.destinationName
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
-    if (key === StateHomeTopics.LOGIN && value === "yes") {
-      router.navigate("/main");
-    }
+    // if (key === StateHomeTopics.LOGIN && value === "yes") {
+    //   router.navigate("/main");
+    // }
     if (key === StateHomeTopics.STATUS) {
-      setStatus(value);
+      setStatus(value as StatusState);
     }
   }
 
@@ -58,6 +53,7 @@ export default function ModalScreen() {
     <ThemedView style={styles.container}>
       <StatusInfo value={status} stylesStatus={styles.status} />
       <TextInput
+        secureTextEntry
         autoFocus
         placeholder="🔒"
         caretHidden

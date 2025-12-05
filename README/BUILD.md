@@ -18,8 +18,12 @@ npx expo install expo-dev-client
 
 ### Локальная
 
+`./gradlew build` - Компилирует и собирает Android-проект с помощью Gradle, подготавливая приложение к развертыванию или тестированию.
+
 `npx expo run:android` - создаётся папка android с проектом
 `--no-build-cache` - не должен кешироваться
+
+`cd android && ./gradlew assembleRelease` - Создает подписанный релизный APK, подходящий для отправки в Google Play Store. Этот APK оптимизирован для производительности и безопасности
 
 ### [Create a development build on EAS](https://docs.expo.dev/develop/development-builds/create-a-build/)
 
@@ -45,6 +49,10 @@ eas build:dev
 Это поведение по умолчанию для любого проекта, созданного с помощью npx create-expo-app.
 
 ## Создание apk
+
+### Expo
+
+`expo build:android` - Собрать приложение для производства на Android, создавая файл .apk или .aab для отправки в Google Play Store.
 
 ### Локальная сборка
 

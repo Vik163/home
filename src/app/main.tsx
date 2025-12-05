@@ -8,18 +8,18 @@ import {
   mqttSubscribeTopic,
 } from "@/shared/lib/mqttBroker";
 import { Theme } from "@/shared/types/theme";
-import { HomeStateTopics } from "@/shared/types/topics";
+import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
 import { Collapsible } from "@/shared/ui/Collapsible/Collapsible";
 import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { useRouter } from "expo-router";
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button, StyleSheet, Text } from "react-native";
 import * as UI from "shared/ui";
 
 export default function MainPage() {
-  const [status, setStatus] = React.useState("Нет связи с брокером");
+  const [status, setStatus] = useState<StatusState>("offline");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
@@ -36,7 +36,7 @@ export default function MainPage() {
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
     if (key === StateHomeTopics.STATUS) {
-      setStatus(value);
+      setStatus(value as StatusState);
     }
   }
 
