@@ -13,12 +13,6 @@
       "android": {
         "gradleCommand": ":app:assembleRelease"
       }
-    },
-    "preview2": {
-      "developmentClient": true
-    },
-    "preview3": {
-      "distribution": "internal"
     }
   },
   "submit": {

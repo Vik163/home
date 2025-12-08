@@ -59,6 +59,33 @@ eas build:dev
 `npx expo run:android --variant release`  
 apk будет в `...\android\app\build\outputs\apk\release`
 
+#### Уменьшить размер apk
+
+В файле app/build.gradle
+
+```java
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+
+            signingConfig signingConfigs.debug
+            def enableShrinkResources = findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false'
+            // shrinkResources enableShrinkResources.toBoolean()
+            // minifyEnabled enableMinifyInReleaseBuilds
+            minifyEnabled true  // уменьшение размера файла
+            shrinkResources true  // уменьшение размера файла (удалит все ресурсы, которые нигде не используются в проекте)
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro" // уменьшение размера файла
+            // proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            def enablePngCrunchInRelease = findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true'
+            crunchPngs enablePngCrunchInRelease.toBoolean()
+        }
+    }
+```
+
 [Локальная релизная сборка (также известная как производственная сборка)](https://docs.expo.dev/guides/local-app-production/)
 
 ### Сборка с помощью EAS Build
@@ -85,11 +112,8 @@ apk будет в `...\android\app\build\outputs\apk\release`
            "gradleCommand": ":app:assembleRelease"
          }
        },
-       "preview3": {
-         "developmentClient": true
-       },
        "preview4": {
-         "distribution": "internal"
+         "distribution": "internal" /*with this option you'll be able to share your build URLs with anyone, and they will be able to install the builds to their devices straight from the Expo website. When using internal, make sure the build produces a .apk or ipa file. Otherwise, the shareable URL will be not work*/
        },
        "production": {}
      }

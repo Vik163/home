@@ -8,14 +8,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="29500e21-2873-405c-a652-f397ce829c88" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/features/StatusInfo/StatusInfo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/features/StatusInfo/StatusInfo.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/constants/mqttTopics.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/lib/mqttBroker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/lib/mqttBroker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/shared/types/topics.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/types/topics.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README/BUILD.md" beforeDir="false" afterPath="$PROJECT_DIR$/README/BUILD.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eas.json" beforeDir="false" afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +37,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "AnalyzeApkAction.lastApkPath": "C:/arduino/home/android/app/build/outputs/apk/release/app-release.apk",
+    "AnalyzeApkAction.lastApkPath": "C:/Users/user/Desktop/home.apk",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
