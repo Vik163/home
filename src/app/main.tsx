@@ -1,5 +1,4 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
-import { SwitchTheme } from "@/features/switchTheme/SwitchTheme";
 import { StateHomeTopics, statusTopic } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
@@ -10,7 +9,6 @@ import {
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
-import { Collapsible } from "@/shared/ui/Collapsible/Collapsible";
 import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { useRouter } from "expo-router";
 import * as React from "react";
@@ -48,13 +46,11 @@ export default function MainPage() {
       <Text>{"Home"}</Text>
 
       <Button title={"Main"} onPress={() => router.navigate("/")} />
-      <Collapsible title="Title" />
       <ExternalLink
         href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
         style={{ backgroundColor: "#55ffff" }}
       />
       <AnimatedText />
-      <SwitchTheme />
     </UI.Container>
   );
 }

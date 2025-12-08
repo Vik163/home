@@ -1,5 +1,5 @@
 import { Link, useRouter } from "expo-router";
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import { StateHomeTopics, statusTopic } from "@/shared/constants/mqttTopics";
@@ -9,26 +9,50 @@ import {
   client,
   mqttSubscribeTopic,
 } from "@/shared/lib/mqttBroker";
-import { ThemedView } from "@/shared/lib/themed-view";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
+import { Font } from "@/shared/ui";
 import Loader from "@/shared/ui/Loader/Loader";
 import { useEffect, useState } from "react";
 
 export default function ModalScreen() {
   const [pass, setPass] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<StatusState>("offline");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
+
+  async function getAuth() {
+    setLoading(true);
+
+    fetch("https://photosalon.online/api/ard/auth", {
+      method: "POST",
+      headers: {
+        Authorization: process.env.EXPO_PUBLIC_ARD_JWT_SECRET!,
+      },
+      body: pass,
+    })
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((data: { auth: boolean }) => {
+        if (data.auth) {
+          router.navigate("/main");
+        } else {
+          setPass("");
+          setError("Не попал!");
+        }
+        setLoading(false);
+      });
+  }
 
   useEffect(() => {
     if (brokerConnected()) mqttSubscribeTopic(statusTopic);
   }, [brokerConnected()]);
 
   function onSubmit() {
-    // sendMessageId(loginTopic, pass);
-    setLoading(true);
+    getAuth();
   }
 
   async function onMessageArrived(message: {
@@ -39,9 +63,7 @@ export default function ModalScreen() {
     const key = message.destinationName
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
-    // if (key === StateHomeTopics.LOGIN && value === "yes") {
-    //   router.navigate("/main");
-    // }
+
     if (key === StateHomeTopics.STATUS) {
       setStatus(value as StatusState);
     }
@@ -50,7 +72,7 @@ export default function ModalScreen() {
   client.onMessageArrived = onMessageArrived;
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <StatusInfo value={status} stylesStatus={styles.status} />
       <TextInput
         secureTextEntry
@@ -64,11 +86,12 @@ export default function ModalScreen() {
         style={styles.input}
         onSubmitEditing={onSubmit}
       />
+      {error && <Font style={styles.error}>{error}</Font>}
       <Link href="/" dismissTo style={styles.link}>
         Вернуться на главную
       </Link>
       {loading && <Loader />}
-    </ThemedView>
+    </View>
   );
 }
 
@@ -78,9 +101,10 @@ const createStyles = () => (theme: Theme) => {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      gap: 60,
+      gap: 50,
       padding: 20,
       position: "relative",
+      backgroundColor: theme.colors.background,
     },
     status: {
       position: "absolute",
@@ -97,6 +121,13 @@ const createStyles = () => (theme: Theme) => {
       fontWeight: 500,
       letterSpacing: 5,
       color: theme.colors.text,
+    },
+    error: {
+      textAlign: "center",
+      fontSize: 20,
+      fontWeight: 500,
+      letterSpacing: 5,
+      color: theme.colors.error,
     },
   });
 };

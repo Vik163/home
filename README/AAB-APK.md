@@ -7,18 +7,22 @@
 3. Скопировать файл your_key_name.keystore (хранилище ключей `KEYSTORE.md`) в ту же папку.
 4. Скопировать файл your.aab в ту же папку.
 5. Перед выполнением команды убедиться, что файлы bundletool-all-x.x.x.jar , .aab и keystore находятся в одной папке.
+6. Перейти в папку и выполнить:
 
 ```java
 
-java -jar /C:/arduino/tests/bundletool-all-1.18.2.jar build-apks \
-  --bundle=/C:/arduino/tests/test.aab \
-  --output=/C:/arduino/tests/test.apks \
+java -jar /C:/arduino/apks/bundletool-all-1.18.2.jar build-apks
+  --bundle=/C:/arduino/apks/app.aab
+  --output=/C:/arduino/apks/app.apks \
   --mode=universal \ // будет работать на всех устройствах Android
   --ks=/C:/arduino/tests/your_key_name.keystore \
   --ks-key-alias=my-key-alias \
   --ks-pass=pass:password \
   --key-pass=pass:password
-  && unzip test.apks -d test_extracted // сработает если находиться в этой папке
+  && unzip app.apks -d test_extracted // сработает если находиться в этой папке
+
+
+  java -jar bundletool-all-1.18.2.jar build-apks --bundle=app.aab --output=app.apks --mode=universal && unzip app.apks -d test_extracted
 
 
 

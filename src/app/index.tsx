@@ -1,6 +1,7 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import internet from "@/shared/assets/images/internet.png";
 import link from "@/shared/assets/images/link.png";
+import { FontFamily } from "@/shared/constants/fonts";
 import {
   stateHomeGroupTopics,
   StateHomeTopics,
@@ -37,12 +38,10 @@ export default function RootPage() {
   const [threshold, setThreshold] = useState("0");
   const [average, setAverage] = useState("0.0");
   const [status, setStatus] = useState<StatusState>("offline");
-  const { styles, theme } = useStyles(createStyles());
-  const router = useRouter();
+  const { styles } = useStyles(createStyles());
 
-  function removeLastNum(num: string, k: number) {
-    return num.slice(0, -k);
-  }
+  // console.log("theme:", theme);
+  const router = useRouter();
 
   async function getStatData() {
     fetch("https://photosalon.online/api/ard")
@@ -95,40 +94,40 @@ export default function RootPage() {
 
     switch (key) {
       case StateHomeTopics.TEMP:
-        setTemp(removeLastNum(value, 1));
+        setTemp(value.slice(0, -1));
         break;
       case StateHomeTopics.HUMD:
-        setHumd(removeLastNum(value, 3));
+        setHumd(value.slice(0, -3));
         break;
       case StateHomeTopics.VOLT:
-        setVolt(removeLastNum(value, 3));
+        setVolt(value.slice(0, -3));
         break;
       case StateHomeTopics.CURRENT:
-        setCurrent(removeLastNum(value, 1));
+        setCurrent(value.slice(0, -1));
         break;
       case StateHomeTopics.FREQUENCY:
-        setFrequency(Math.floor(+value).toString());
+        setFrequency(Math.round(+value).toString());
         break;
       case StateHomeTopics.POWER:
-        setPower((+removeLastNum(value, 3) / 1000).toString().slice(0, 4));
+        setPower((+value.slice(0, -3) / 1000).toString().slice(0, 4));
         break;
       case StateHomeTopics.ENERGY:
-        setEnergy(removeLastNum(value, 1));
+        setEnergy(value.slice(0, -3));
         break;
       case StateHomeTopics.PF:
-        setPf(removeLastNum(value, 1));
+        setPf(value.slice(0, -1));
         break;
       case StateHomeTopics.AVERAGE:
-        setAverage(removeLastNum(value, 3));
+        setAverage(value.slice(0, -3));
         break;
       case StateHomeTopics.THRESHOLD:
-        setThreshold(removeLastNum(value, 3));
+        setThreshold(value.slice(0, -3));
         break;
       case StateHomeTopics.MAX:
-        setMax(removeLastNum(value, 3));
+        setMax(value.slice(0, -3));
         break;
       case StateHomeTopics.MIN:
-        setMin(removeLastNum(value, 3));
+        setMin(value.slice(0, -3));
         break;
       case StateHomeTopics.STATUS:
         setStatus(value as StatusState);
@@ -160,10 +159,13 @@ export default function RootPage() {
       <IndicationModule title="Мощность kW" value={power} />
       <IndicationModule title="Энергия kW/h" value={energy} />
       <IndicationModule title="cos φ" value={pf} />
-      <IndicationModule title="Min v/сутки" value={min} />
-      <IndicationModule title="Max v/сутки" value={max} />
-      <IndicationModule title="Avr v/сутки" value={average} />
-      <IndicationModule title="V < 190 м/сутки" value={threshold} />
+      <UI.Font max alignCenter size={16} family={FontFamily.SOFIA}>
+        Статистика за сутки
+      </UI.Font>
+      <IndicationModule title="U min" value={min} />
+      <IndicationModule title="U max" value={max} />
+      <IndicationModule title="U среднее" value={average} />
+      <IndicationModule title="U < 190 мин" value={threshold} />
 
       <UI.Button
         stylesBtn={styles.btn}
@@ -172,7 +174,7 @@ export default function RootPage() {
         }
         fontSize={16}
         icon={internet}
-        sizeIcon={20}
+        sizeIcon={!brokerConnected() ? 20 : 0}
         onPress={
           !brokerConnected()
             ? () => mqttConnect(stateHomeGroupTopics)
@@ -186,7 +188,7 @@ export default function RootPage() {
 const createStyles = () => (theme: Theme) => {
   return StyleSheet.create({
     container: {
-      rowGap: 18,
+      rowGap: 15,
       columnGap: 20,
       flexDirection: "row",
       flexWrap: "wrap",
@@ -209,7 +211,6 @@ const createStyles = () => (theme: Theme) => {
       borderRadius: 10,
       width: 40,
     },
-
     btn: {
       marginTop: 5,
       gap: 10,

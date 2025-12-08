@@ -17,9 +17,6 @@
 1. остановить
    `./gradlew --stop`
 
-2. удалить
-   `rm -rf ~/.gradle/caches/`
-
 ## android studio avd (эмулятор)
 
 1. в андроид студио кликнуть `device manager` с правой стороны

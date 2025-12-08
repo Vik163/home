@@ -23,5 +23,6 @@ declare namespace NodeJS {
     EXPO_PUBLIC_MQTT_PASS: string;
     EXPO_PUBLIC_MQTT_SERVER: string;
     EXPO_PUBLIC_MQTT_PORT: number;
+    EXPO_PUBLIC_ARD_JWT_SECRET: string;
   }
 }

@@ -10,6 +10,7 @@ interface FontProps {
   weight?: FontWeights;
   lineHeight?: number;
   color?: Colors;
+  max?: boolean;
   children?: React.ReactNode;
   alignCenter?: boolean;
   textAlign?: "left" | "auto" | "center" | "right" | "justify";
@@ -37,6 +38,7 @@ const createStyles = (font: FontProps & TextProps) => (theme: Theme) => {
       lineHeight,
       includeFontPadding: false,
       textAlignVertical: "center",
+      width: font.max ? "100%" : "auto",
       fontFamily: font.family,
       fontSize: fontSizes,
       fontWeight: font.weight,
