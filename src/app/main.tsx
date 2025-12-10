@@ -1,10 +1,15 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
-import { StateHomeTopics, statusTopic } from "@/shared/constants/mqttTopics";
+import {
+  StateHomeTopics,
+  stateLight,
+  statusTopic,
+} from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
   brokerConnected,
   client,
   mqttSubscribeTopic,
+  sendMessageId,
 } from "@/shared/lib/mqttBroker";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
@@ -18,27 +23,41 @@ import * as UI from "shared/ui";
 
 export default function MainPage() {
   const [status, setStatus] = useState<StatusState>("offline");
+  const [isLight, setIsLight] = useState<"0" | "1">("0");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
   useEffect(() => {
-    if (brokerConnected()) mqttSubscribeTopic(statusTopic);
+    if (brokerConnected()) {
+      mqttSubscribeTopic(statusTopic);
+      mqttSubscribeTopic(stateLight);
+    }
+
+    async function onMessageArrived(message: {
+      payloadString: string;
+      destinationName: string;
+    }) {
+      const value = message.payloadString;
+      const key = message.destinationName
+        .split("/")
+        .slice(-1)[0] as HomeStateTopics;
+      if (key === StateHomeTopics.STATUS) {
+        setStatus(value as StatusState);
+      } else if (key === StateHomeTopics.LIGHT) {
+        setIsLight(value as "0" | "1");
+        console.log("i", value);
+      }
+    }
+
+    client.onMessageArrived = onMessageArrived;
   }, [brokerConnected()]);
 
-  async function onMessageArrived(message: {
-    payloadString: string;
-    destinationName: string;
-  }) {
-    const value = message.payloadString;
-    const key = message.destinationName
-      .split("/")
-      .slice(-1)[0] as HomeStateTopics;
-    if (key === StateHomeTopics.STATUS) {
-      setStatus(value as StatusState);
-    }
+  function onLight() {
+    sendMessageId(stateLight, "1");
   }
-
-  client.onMessageArrived = onMessageArrived;
+  function offLight() {
+    sendMessageId(stateLight, "0");
+  }
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
@@ -46,6 +65,8 @@ export default function MainPage() {
       <Text>{"Home"}</Text>
 
       <Button title={"Main"} onPress={() => router.navigate("/")} />
+      <Button title={"On"} onPress={() => onLight()} />
+      <Button title={"Off"} onPress={() => offLight()} />
       <ExternalLink
         href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
         style={{ backgroundColor: "#55ffff" }}

@@ -148,7 +148,7 @@ export default function RootPage() {
           stylesBtn={styles.link}
           icon={link}
           sizeIcon={20}
-          onPress={() => router.navigate("/modal")}
+          onPress={() => router.navigate("/main")}
         />
       </View>
       <IndicationModule title="Температура °C" value={temp} />

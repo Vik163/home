@@ -57,9 +57,9 @@ const unSubscribeTopic = () => {
   // client.unsubscribe(subscribedTopic);
 };
 
-export const sendMessageId = (subscribedTopic: string, text: string) => {
+export const sendMessageId = (subscribedTopic: string, text: any) => {
   //@ts-ignore
-  var message = new Paho.MQTT.Message(options.id + ":" + text);
+  var message = new Paho.MQTT.Message(text);
   message.destinationName = subscribedTopic;
   client.send(message);
 };
