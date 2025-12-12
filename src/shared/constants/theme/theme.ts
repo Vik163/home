@@ -13,6 +13,7 @@ export const Colors = {
     active: palette.darkGreen,
     link: palette.darkBlue,
     overlay: palette.shark,
+    yellow: palette.sun,
   },
   dark: {
     icon: "#9BA1A6",
@@ -25,5 +26,6 @@ export const Colors = {
     active: palette.lightGreen,
     link: palette.lightBlue,
     overlay: palette.shark,
+    yellow: palette.sun,
   },
 };

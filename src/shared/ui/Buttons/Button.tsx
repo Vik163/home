@@ -92,7 +92,7 @@ const createStyles = (styles: Styles, reverse?: boolean) => (theme: Theme) => {
       flexDirection: reverse ? "row-reverse" : "row",
       width: "100%",
       height: "100%",
-      gap: styles.gap,
+      gap: styles.gap || 0,
     },
   });
 };

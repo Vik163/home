@@ -13,4 +13,5 @@ export const palette = {
   darkBlue: "#184F80",
   lightGreen: "#56FF18",
   darkGreen: "#238500",
+  sun: "#FFCA27",
 };

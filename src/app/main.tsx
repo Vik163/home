@@ -1,7 +1,9 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
+import SwitchWithTimer from "@/features/SwitchWithTimer/SwitchWithTimer";
 import {
   StateHomeTopics,
   stateLight,
+  stateTimer,
   statusTopic,
 } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
@@ -11,6 +13,7 @@ import {
   mqttSubscribeTopic,
   sendMessageId,
 } from "@/shared/lib/mqttBroker";
+import { ArduinoData, SwitchStatus } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
@@ -23,14 +26,42 @@ import * as UI from "shared/ui";
 
 export default function MainPage() {
   const [status, setStatus] = useState<StatusState>("offline");
-  const [isLight, setIsLight] = useState<"0" | "1">("0");
+  const [isOutdoorLight, setIsOutdoorLight] = useState<SwitchStatus>("0");
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
+  function getData() {
+    fetch("http://192.168.0.17/api/ard")
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((data: ArduinoData) => {
+        console.log("data:", data);
+      });
+  }
+
+  function updateOutdoorLightData(value: SwitchStatus) {
+    fetch("http://192.168.0.17/api/ard", {
+      method: "POST",
+      body: JSON.stringify({
+        outdoorLight: value,
+      }),
+    })
+      .then(async (res) => {
+        return await res.json();
+      })
+      .then((data: ArduinoData) => {
+        console.log("data:", data);
+      });
+  }
+
   useEffect(() => {
+    getData();
+
     if (brokerConnected()) {
       mqttSubscribeTopic(statusTopic);
       mqttSubscribeTopic(stateLight);
+      mqttSubscribeTopic(stateTimer);
     }
 
     async function onMessageArrived(message: {
@@ -44,7 +75,10 @@ export default function MainPage() {
       if (key === StateHomeTopics.STATUS) {
         setStatus(value as StatusState);
       } else if (key === StateHomeTopics.LIGHT) {
-        setIsLight(value as "0" | "1");
+        const val = value as SwitchStatus;
+        setIsOutdoorLight(val);
+      } else if (key === StateHomeTopics.TIMER) {
+        // setIsLight(value as "0" | "1");
         console.log("i", value);
       }
     }
@@ -52,21 +86,21 @@ export default function MainPage() {
     client.onMessageArrived = onMessageArrived;
   }, [brokerConnected()]);
 
-  function onLight() {
-    sendMessageId(stateLight, "1");
-  }
-  function offLight() {
-    sendMessageId(stateLight, "0");
+  function setTimer() {
+    console.log("i");
+
+    sendMessageId(stateTimer, "24.12:13.15");
   }
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <StatusInfo value={status} stylesStatus={styles.status} />
       <Text>{"Home"}</Text>
+      <SwitchWithTimer isOutdoorLight={isOutdoorLight} />
 
       <Button title={"Main"} onPress={() => router.navigate("/")} />
-      <Button title={"On"} onPress={() => onLight()} />
-      <Button title={"Off"} onPress={() => offLight()} />
+      <Button title={"Timer"} onPress={() => setTimer()} />
+
       <ExternalLink
         href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
         style={{ backgroundColor: "#55ffff" }}

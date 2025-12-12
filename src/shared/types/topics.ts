@@ -12,6 +12,7 @@ export type HomeStateTopics =
   | "threshold"
   | "average"
   | "light"
+  | "timer"
   | "status";
 
 export type StatusState = "online" | "offline";

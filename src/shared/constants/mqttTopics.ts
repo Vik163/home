@@ -2,6 +2,7 @@ export const allTopics = "home/#";
 export const statusTopic = "home/status";
 export const stateHomeGroupTopics = "home/#";
 export const stateLight = "home/light";
+export const stateTimer = "home/timer";
 
 export enum StateHomeTopics {
   TEMP = "temperature",
@@ -18,4 +19,5 @@ export enum StateHomeTopics {
   MIN = "min",
   STATUS = "status",
   LIGHT = "light",
+  TIMER = "timer",
 }
