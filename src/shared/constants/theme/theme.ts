@@ -5,6 +5,7 @@ export const Colors = {
     text: palette.black,
     background: palette.lightGrey,
     bgBtn: palette.white,
+    bgModal: palette.black,
     icon: "#687076",
     empty: palette.transparent,
     // navigation
@@ -18,6 +19,7 @@ export const Colors = {
   dark: {
     icon: "#9BA1A6",
     bgBtn: palette.black,
+    bgModal: palette.blackBlue,
     empty: palette.transparent,
     background: palette.black,
     text: palette.lightBlue,

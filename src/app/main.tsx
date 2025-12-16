@@ -2,16 +2,17 @@ import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import SwitchWithTimer from "@/features/SwitchWithTimer/SwitchWithTimer";
 import {
   StateHomeTopics,
-  stateLight,
-  stateTimer,
+  lightStatusTopic,
+  lightTopic,
   statusTopic,
+  timerStatusTopic,
+  timerTopic,
 } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
   brokerConnected,
   client,
   mqttSubscribeTopic,
-  sendMessageId,
 } from "@/shared/lib/mqttBroker";
 import { ArduinoData, SwitchStatus } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
@@ -21,12 +22,14 @@ import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { useRouter } from "expo-router";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import * as UI from "shared/ui";
 
 export default function MainPage() {
   const [status, setStatus] = useState<StatusState>("offline");
+  const [data, setData] = useState<ArduinoData>();
   const [isOutdoorLight, setIsOutdoorLight] = useState<SwitchStatus>("0");
+  const [isTimer, setIsTimer] = useState(false);
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
@@ -36,23 +39,17 @@ export default function MainPage() {
         return await res.json();
       })
       .then((data: ArduinoData) => {
-        console.log("data:", data);
+        if (data) setData(data);
       });
   }
 
-  function updateOutdoorLightData(value: SwitchStatus) {
-    fetch("http://192.168.0.17/api/ard", {
-      method: "POST",
-      body: JSON.stringify({
-        outdoorLight: value,
-      }),
-    })
-      .then(async (res) => {
-        return await res.json();
-      })
-      .then((data: ArduinoData) => {
-        console.log("data:", data);
-      });
+  function updateData(time: string) {
+    let arrTimes = data?.timerOutLight!;
+    if (arrTimes?.some((t) => t === time)) {
+      arrTimes = arrTimes.filter((t) => t !== time);
+    } else arrTimes?.push(time);
+
+    if (data?.timerOutLight) setData({ ...data, timerOutLight: arrTimes });
   }
 
   useEffect(() => {
@@ -60,46 +57,44 @@ export default function MainPage() {
 
     if (brokerConnected()) {
       mqttSubscribeTopic(statusTopic);
-      mqttSubscribeTopic(stateLight);
-      mqttSubscribeTopic(stateTimer);
+      mqttSubscribeTopic(lightTopic);
+      mqttSubscribeTopic(timerTopic);
+      mqttSubscribeTopic(timerStatusTopic);
+      mqttSubscribeTopic(lightStatusTopic);
     }
-
-    async function onMessageArrived(message: {
-      payloadString: string;
-      destinationName: string;
-    }) {
-      const value = message.payloadString;
-      const key = message.destinationName
-        .split("/")
-        .slice(-1)[0] as HomeStateTopics;
-      if (key === StateHomeTopics.STATUS) {
-        setStatus(value as StatusState);
-      } else if (key === StateHomeTopics.LIGHT) {
-        const val = value as SwitchStatus;
-        setIsOutdoorLight(val);
-      } else if (key === StateHomeTopics.TIMER) {
-        // setIsLight(value as "0" | "1");
-        console.log("i", value);
-      }
-    }
-
-    client.onMessageArrived = onMessageArrived;
   }, [brokerConnected()]);
 
-  function setTimer() {
-    console.log("i");
-
-    sendMessageId(stateTimer, "24.12:13.15");
+  async function onMessageArrived(message: {
+    payloadString: string;
+    destinationName: string;
+  }) {
+    const value = message.payloadString;
+    const key = message.destinationName
+      .split("/")
+      .slice(-1)[0] as HomeStateTopics;
+    if (key === StateHomeTopics.STATUS) {
+      setStatus(value as StatusState);
+    } else if (key === StateHomeTopics.TIMER_STATUS) {
+      setIsTimer(!isTimer);
+    } else if (key === StateHomeTopics.LIGHT_STATUS) {
+      const val = value as SwitchStatus;
+      setIsOutdoorLight(val);
+    }
   }
+
+  client.onMessageArrived = onMessageArrived;
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <StatusInfo value={status} stylesStatus={styles.status} />
-      <Text>{"Home"}</Text>
-      <SwitchWithTimer isOutdoorLight={isOutdoorLight} />
+      <SwitchWithTimer
+        updateData={updateData}
+        isOutdoorLight={isOutdoorLight}
+        isTimer={isTimer}
+        data={data}
+      />
 
       <Button title={"Main"} onPress={() => router.navigate("/")} />
-      <Button title={"Timer"} onPress={() => setTimer()} />
 
       <ExternalLink
         href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
@@ -115,9 +110,10 @@ const createStyles = () => (theme: Theme) => {
     container: {
       flex: 1,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       gap: 60,
       padding: 20,
+      paddingTop: 60,
     },
     status: {
       position: "absolute",

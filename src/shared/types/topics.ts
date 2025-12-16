@@ -13,6 +13,8 @@ export type HomeStateTopics =
   | "average"
   | "light"
   | "timer"
+  | "timer-status"
+  | "light-status"
   | "status";
 
 export type StatusState = "online" | "offline";

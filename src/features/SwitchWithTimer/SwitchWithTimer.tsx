@@ -1,47 +1,68 @@
 import { FontFamily, FontSizes } from "@/shared/constants/fonts";
-import { stateLight, stateTimer } from "@/shared/constants/mqttTopics";
+import { lightTopic, timerTopic } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { sendMessageId } from "@/shared/lib/mqttBroker";
 import { ArduinoData, SwitchStatus } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
 import { Button, Font } from "@/shared/ui";
+import ModalUI from "@/shared/ui/ModalUI/ModalUI";
 import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { TimerModal } from "../TimerModal/TimerModal";
 
 interface SwitchWithTimerProps {
+  isTimer: boolean;
   isOutdoorLight: SwitchStatus;
+  data?: ArduinoData;
+  updateData: (time: string) => void;
 }
 
 export default function SwitchWithTimer(props: SwitchWithTimerProps) {
-  const { isOutdoorLight } = props;
+  const { isTimer, isOutdoorLight, data, updateData } = props;
+
   const { styles, theme } = useStyles(createStyles());
 
-  function updateOutdoorLightData(value: SwitchStatus) {
-    fetch("http://192.168.0.17/api/ard", {
-      method: "POST",
-      body: JSON.stringify({
-        outdoorLight: value,
-      }),
-    })
-      .then(async (res) => {
-        return await res.json();
-      })
-      .then((data: ArduinoData) => {
-        console.log("data:", data);
-      });
-  }
+  const [isLoadingLight, setIsLoadingLight] = useState(false);
+  const [isLoadingTimer, setIsLoadingTimer] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [lenData, setLenData] = useState(0);
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const arrLen = data?.timerOutLight?.length!;
+    setLenData(arrLen);
+  }, [data]);
+
+  useEffect(() => {
+    setIsLoadingTimer(false);
+    setTime("");
+  }, [isTimer]);
+
+  useEffect(() => {
+    setIsLoadingLight(false);
+  }, [isOutdoorLight]);
 
   function onLight() {
-    sendMessageId(stateLight, "1");
+    sendMessageId(lightTopic, "1");
+    setIsLoadingLight(true);
   }
   function offLight() {
-    console.log("i");
-    sendMessageId(stateLight, "0");
+    sendMessageId(lightTopic, "0");
+    setIsLoadingLight(true);
   }
-  function setTimer() {
-    console.log("i");
 
-    sendMessageId(stateTimer, "24.12:13.15");
+  function onSubmit() {
+    if (time) {
+      sendMessageId(timerTopic, time);
+      setIsLoadingTimer(true);
+      updateData(time);
+    }
+  }
+
+  function closeModal() {
+    setModalVisible(false);
+    setTime("");
   }
 
   return (
@@ -63,12 +84,16 @@ export default function SwitchWithTimer(props: SwitchWithTimerProps) {
             {"***************"}
           </Text>
         </View>
-        <Button
-          stylesBtn={styles.timer}
-          fontSize={35}
-          title={"🕒"}
-          onPress={() => onLight()}
-        />
+        {isLoadingLight ? (
+          <ActivityIndicator size={45} color={theme.colors.link} />
+        ) : (
+          <Button
+            stylesBtn={styles.timer}
+            fontSize={35}
+            title={lenData > 0 ? "⏰" : "🕒"}
+            onPress={() => setModalVisible(!modalVisible)}
+          />
+        )}
       </View>
       {isOutdoorLight === "0" ? (
         <Button
@@ -82,6 +107,24 @@ export default function SwitchWithTimer(props: SwitchWithTimerProps) {
           title={"Выключить"}
           onPress={() => offLight()}
         />
+      )}
+      {modalVisible && (
+        <ModalUI
+          title="Установить время"
+          width={300}
+          closeModal={() => closeModal()}
+          onSubmit={onSubmit}
+          modalVisible={modalVisible}
+        >
+          <TimerModal
+            isLoadingTimer={isLoadingTimer}
+            time={time}
+            setTime={(time) => setTime(time)}
+            dtimes={data?.timerOutLight}
+            setIsLoadingTimer={setIsLoadingTimer}
+            updateData={updateData}
+          />
+        </ModalUI>
       )}
     </View>
   );
@@ -123,7 +166,7 @@ const createStyles = () => (theme: Theme) => {
       color: theme.colors.link,
       borderColor: theme.colors.border,
       borderWidth: 1,
-      borderRadius: 8,
+      borderRadius: 6,
     },
   });
 };

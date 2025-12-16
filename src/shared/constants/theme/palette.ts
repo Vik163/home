@@ -11,6 +11,7 @@ export const palette = {
   iron: "#E5E5E7",
   lightBlue: "#6E9AC1",
   darkBlue: "#184F80",
+  blackBlue: "#000015",
   lightGreen: "#56FF18",
   darkGreen: "#238500",
   sun: "#FFCA27",
