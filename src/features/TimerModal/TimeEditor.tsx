@@ -30,12 +30,6 @@ export default function TimeEditor(props: TimeEditorProps) {
         color={theme.colors.border}
         onPress={() => deleteTime(time)}
       />
-      {/* <Button
-        stylesBtn={styles.basket}
-        fontSize={20}
-        title={"✖️"}
-        onPress={() => deleteTime(time)}
-      /> */}
     </View>
   );
 }

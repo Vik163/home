@@ -40,7 +40,6 @@ export default function RootPage() {
   const [status, setStatus] = useState<StatusState>("offline");
   const { styles } = useStyles(createStyles());
 
-  // console.log("theme:", theme);
   const router = useRouter();
 
   async function getStatData() {
@@ -134,11 +133,13 @@ export default function RootPage() {
         break;
 
       default:
-        console.log("Error:");
+        console.log("default mqtt message:");
     }
   }
 
-  client.onMessageArrived = onMessageArrived;
+  useEffect(() => {
+    client.onMessageArrived = onMessageArrived;
+  }, []);
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
@@ -148,7 +149,7 @@ export default function RootPage() {
           stylesBtn={styles.link}
           icon={link}
           sizeIcon={20}
-          onPress={() => router.navigate("/main")}
+          onPress={() => router.navigate("/modal")}
         />
       </View>
       <IndicationModule title="Температура °C" value={temp} />

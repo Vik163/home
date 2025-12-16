@@ -22,8 +22,9 @@ import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { useRouter } from "expo-router";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import * as UI from "shared/ui";
+import { Button } from "shared/ui";
 
 export default function MainPage() {
   const [status, setStatus] = useState<StatusState>("offline");
@@ -94,7 +95,11 @@ export default function MainPage() {
         data={data}
       />
 
-      <Button title={"Main"} onPress={() => router.navigate("/")} />
+      <Button
+        stylesBtn={styles.link}
+        title={"На главную"}
+        onPress={() => router.navigate("/")}
+      />
 
       <ExternalLink
         href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
@@ -122,14 +127,9 @@ const createStyles = () => (theme: Theme) => {
       height: 28,
     },
     link: {
+      position: "absolute",
+      bottom: 70,
       color: theme.colors.link,
-    },
-    input: {
-      textAlign: "center",
-      fontSize: 40,
-      fontWeight: 500,
-      letterSpacing: 5,
-      color: theme.colors.text,
     },
   });
 };

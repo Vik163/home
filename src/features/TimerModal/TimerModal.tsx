@@ -1,7 +1,6 @@
 import { useStyles } from "@/shared/hooks/useStyles";
 import { Theme } from "@/shared/types/theme";
 import * as React from "react";
-import { useState } from "react";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -30,8 +29,6 @@ export const TimerModal = (props: TimerModalProps) => {
     updateData,
   } = props;
   const { styles, theme } = useStyles(createStyles());
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
   function handleData(value: string) {
     const len = value.length;
@@ -41,10 +38,6 @@ export const TimerModal = (props: TimerModalProps) => {
       setTime(`${time}-${value.slice(-1)}`);
     } else setTime(value);
   }
-
-  //   function onSubmit() {
-  //     sendMessageId(timerTopic, time);
-  //   }
 
   return (
     <View style={styles.container}>
