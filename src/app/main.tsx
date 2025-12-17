@@ -1,18 +1,11 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import SwitchWithTimer from "@/features/SwitchWithTimer/SwitchWithTimer";
-import {
-  StateHomeTopics,
-  lightStatusTopic,
-  lightTopic,
-  statusTopic,
-  timerStatusTopic,
-  timerTopic,
-} from "@/shared/constants/mqttTopics";
+import { StateHomeTopics, topicsMain } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
   brokerConnected,
   client,
-  mqttSubscribeTopic,
+  mqttSubscribeArrTopics,
 } from "@/shared/lib/mqttBroker";
 import { ArduinoData, SwitchStatus } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
@@ -35,7 +28,7 @@ export default function MainPage() {
   const router = useRouter();
 
   function getData() {
-    fetch("http://192.168.0.17/api/ard")
+    fetch(process.env.EXPO_PUBLIC_HTTP_SERVER)
       .then(async (res) => {
         return await res.json();
       })
@@ -57,11 +50,7 @@ export default function MainPage() {
     getData();
 
     if (brokerConnected()) {
-      mqttSubscribeTopic(statusTopic);
-      mqttSubscribeTopic(lightTopic);
-      mqttSubscribeTopic(timerTopic);
-      mqttSubscribeTopic(timerStatusTopic);
-      mqttSubscribeTopic(lightStatusTopic);
+      mqttSubscribeArrTopics(topicsMain);
     }
   }, [brokerConnected()]);
 
@@ -102,7 +91,7 @@ export default function MainPage() {
       />
 
       <ExternalLink
-        href={"https://dzen.ru/a/Y7mFGVuhMh8HuwKL"}
+        href={"https://photosalon.online"}
         style={{ backgroundColor: "#55ffff" }}
       />
       <AnimatedText />

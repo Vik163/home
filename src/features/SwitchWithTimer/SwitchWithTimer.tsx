@@ -36,6 +36,7 @@ export default function SwitchWithTimer(props: SwitchWithTimerProps) {
 
   useEffect(() => {
     setIsLoadingTimer(false);
+    updateData(time);
     setTime("");
   }, [isTimer]);
 
@@ -53,10 +54,9 @@ export default function SwitchWithTimer(props: SwitchWithTimerProps) {
   }
 
   function onSubmit() {
-    if (time) {
+    if (time && time.length === 11) {
       sendMessageId(timerTopic, time);
       setIsLoadingTimer(true);
-      updateData(time);
     }
   }
 
@@ -122,7 +122,6 @@ export default function SwitchWithTimer(props: SwitchWithTimerProps) {
             setTime={(time) => setTime(time)}
             dtimes={data?.timerOutLight}
             setIsLoadingTimer={setIsLoadingTimer}
-            updateData={updateData}
           />
         </ModalUI>
       )}

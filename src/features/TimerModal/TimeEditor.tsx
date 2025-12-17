@@ -16,7 +16,7 @@ export default function TimeEditor(props: TimeEditorProps) {
   const { styles, theme } = useStyles(createStyles());
 
   function deleteTime(time: string) {
-    sendMessageId(timerTopic, time);
+    sendMessageId(timerTopic, `${time}d`); // Добавляю букву d как ключ удаления для arduino
     setIsLoadingTimer(true);
     updateData(time);
   }

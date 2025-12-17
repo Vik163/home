@@ -29,6 +29,9 @@ client.onConnectionLost = onConnectionLost;
 export function mqttSubscribeTopic(topic: string) {
   client.subscribe(topic, { qos: 1 });
 }
+export function mqttSubscribeArrTopics(topics: string[]) {
+  topics.forEach((t) => client.subscribe(t, { qos: 1 }));
+}
 
 function onConnect(topic: string) {
   console.log("onConnect");

@@ -23,10 +23,10 @@ export default function ModalScreen() {
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
 
-  async function getAuth() {
+  async function onAuth() {
     setLoading(true);
 
-    fetch("https://photosalon.online/api/ard/auth", {
+    fetch(`${process.env.EXPO_PUBLIC_HTTP_SERVER}/auth`, {
       method: "POST",
       headers: {
         Authorization: process.env.EXPO_PUBLIC_ARD_JWT_SECRET!,
@@ -51,9 +51,9 @@ export default function ModalScreen() {
     if (brokerConnected()) mqttSubscribeTopic(statusTopic);
   }, [brokerConnected()]);
 
-  function onSubmit() {
-    getAuth();
-  }
+  useEffect(() => {
+    if (pass.length === 4) onAuth();
+  }, [pass]);
 
   async function onMessageArrived(message: {
     payloadString: string;
@@ -84,7 +84,7 @@ export default function ModalScreen() {
         value={pass}
         onChangeText={(data) => setPass(data)}
         style={styles.input}
-        onSubmitEditing={onSubmit}
+        onSubmitEditing={onAuth}
       />
       {error && <Font style={styles.error}>{error}</Font>}
       <Link href="/" dismissTo style={styles.link}>

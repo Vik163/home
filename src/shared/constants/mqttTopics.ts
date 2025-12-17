@@ -25,3 +25,11 @@ export enum StateHomeTopics {
   TIMER = "timer",
   TIMER_STATUS = "timer-status",
 }
+
+export const topicsMain = [
+  statusTopic,
+  lightTopic,
+  timerTopic,
+  timerStatusTopic,
+  lightStatusTopic,
+];

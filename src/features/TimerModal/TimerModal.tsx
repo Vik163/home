@@ -16,18 +16,10 @@ interface TimerModalProps {
   setIsLoadingTimer: React.Dispatch<React.SetStateAction<boolean>>;
   isLoadingTimer: boolean;
   dtimes?: string[];
-  updateData: (time: string) => void;
 }
 
 export const TimerModal = (props: TimerModalProps) => {
-  const {
-    time,
-    setTime,
-    isLoadingTimer,
-    dtimes,
-    setIsLoadingTimer,
-    updateData,
-  } = props;
+  const { time, setTime, isLoadingTimer, dtimes, setIsLoadingTimer } = props;
   const { styles, theme } = useStyles(createStyles());
 
   function handleData(value: string) {
@@ -37,6 +29,10 @@ export const TimerModal = (props: TimerModalProps) => {
     } else if (len === 6) {
       setTime(`${time}-${value.slice(-1)}`);
     } else setTime(value);
+  }
+
+  function updateData(value: string) {
+    setTime(value);
   }
 
   return (
@@ -59,8 +55,8 @@ export const TimerModal = (props: TimerModalProps) => {
           (dtimes?.length! < 2 && (
             <TextInput
               style={styles.input}
-              autoFocus
-              // placeholder="🕒"
+              // autoFocus
+              placeholder="-- --"
               // caretHidden
               maxLength={11}
               keyboardType="numeric"

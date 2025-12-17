@@ -26,24 +26,24 @@ import * as UI from "shared/ui";
 
 export default function RootPage() {
   const [temp, setTemp] = useState("0.0");
-  const [humd, setHumd] = useState("0.0");
-  const [volt, setVolt] = useState("0.0");
+  const [humd, setHumd] = useState("0");
+  const [volt, setVolt] = useState("0");
   const [current, setCurrent] = useState("0.0");
-  const [frequency, setFrequency] = useState("0.0");
-  const [power, setPower] = useState("0.0");
-  const [energy, setEnergy] = useState("0.0");
+  const [frequency, setFrequency] = useState("0");
+  const [power, setPower] = useState("0.00");
+  const [energy, setEnergy] = useState("0");
   const [pf, setPf] = useState("0.0");
   const [max, setMax] = useState("0");
   const [min, setMin] = useState("0");
   const [threshold, setThreshold] = useState("0");
-  const [average, setAverage] = useState("0.0");
+  const [average, setAverage] = useState("0");
   const [status, setStatus] = useState<StatusState>("offline");
   const { styles } = useStyles(createStyles());
 
   const router = useRouter();
 
   async function getStatData() {
-    fetch("https://photosalon.online/api/ard")
+    fetch(process.env.EXPO_PUBLIC_HTTP_SERVER)
       .then(async (res) => {
         return await res.json();
       })
@@ -82,62 +82,62 @@ export default function RootPage() {
     getStatData();
   }, [brokerConnected()]);
 
-  async function onMessageArrived(message: {
-    payloadString: string;
-    destinationName: string;
-  }) {
-    const value = message.payloadString;
-    const key = message.destinationName
-      .split("/")
-      .slice(-1)[0] as HomeStateTopics;
-
-    switch (key) {
-      case StateHomeTopics.TEMP:
-        setTemp(value.slice(0, -1));
-        break;
-      case StateHomeTopics.HUMD:
-        setHumd(value.slice(0, -3));
-        break;
-      case StateHomeTopics.VOLT:
-        setVolt(value.slice(0, -3));
-        break;
-      case StateHomeTopics.CURRENT:
-        setCurrent(value.slice(0, -1));
-        break;
-      case StateHomeTopics.FREQUENCY:
-        setFrequency(Math.round(+value).toString());
-        break;
-      case StateHomeTopics.POWER:
-        setPower((+value.slice(0, -3) / 1000).toString().slice(0, 4));
-        break;
-      case StateHomeTopics.ENERGY:
-        setEnergy(value.slice(0, -3));
-        break;
-      case StateHomeTopics.PF:
-        setPf(value.slice(0, -1));
-        break;
-      case StateHomeTopics.AVERAGE:
-        setAverage(value.slice(0, -3));
-        break;
-      case StateHomeTopics.THRESHOLD:
-        setThreshold(value.slice(0, -3));
-        break;
-      case StateHomeTopics.MAX:
-        setMax(value.slice(0, -3));
-        break;
-      case StateHomeTopics.MIN:
-        setMin(value.slice(0, -3));
-        break;
-      case StateHomeTopics.STATUS:
-        setStatus(value as StatusState);
-        break;
-
-      default:
-        console.log("default mqtt message:");
-    }
-  }
-
   useEffect(() => {
+    async function onMessageArrived(message: {
+      payloadString: string;
+      destinationName: string;
+    }) {
+      const value = message.payloadString;
+      const key = message.destinationName
+        .split("/")
+        .slice(-1)[0] as HomeStateTopics;
+
+      switch (key) {
+        case StateHomeTopics.TEMP:
+          setTemp(value.slice(0, -1));
+          break;
+        case StateHomeTopics.HUMD:
+          setHumd(value.slice(0, -3));
+          break;
+        case StateHomeTopics.VOLT:
+          setVolt(value.slice(0, -3));
+          break;
+        case StateHomeTopics.CURRENT:
+          setCurrent(value.slice(0, -1));
+          break;
+        case StateHomeTopics.FREQUENCY:
+          setFrequency(Math.round(+value).toString());
+          break;
+        case StateHomeTopics.POWER:
+          setPower((+value.slice(0, -3) / 1000).toString().slice(0, 4));
+          break;
+        case StateHomeTopics.ENERGY:
+          setEnergy(value.slice(0, -3));
+          break;
+        case StateHomeTopics.PF:
+          setPf(value.slice(0, -1));
+          break;
+        case StateHomeTopics.AVERAGE:
+          setAverage(value.slice(0, -3));
+          break;
+        case StateHomeTopics.THRESHOLD:
+          setThreshold(value.slice(0, -3));
+          break;
+        case StateHomeTopics.MAX:
+          setMax(value.slice(0, -3));
+          break;
+        case StateHomeTopics.MIN:
+          setMin(value.slice(0, -3));
+          break;
+        case StateHomeTopics.STATUS:
+          setStatus(value as StatusState);
+          break;
+
+        default:
+          console.log("default mqtt message:");
+      }
+    }
+
     client.onMessageArrived = onMessageArrived;
   }, []);
 
