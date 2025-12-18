@@ -15,6 +15,7 @@ export type HomeStateTopics =
   | "timer"
   | "timer-status"
   | "light-status"
+  | "manage"
   | "status";
 
 export type StatusState = "online" | "offline";

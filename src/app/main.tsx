@@ -62,7 +62,7 @@ export default function MainPage() {
     const key = message.destinationName
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
-    if (key === StateHomeTopics.STATUS) {
+    if (key === StateHomeTopics.STATUS_MAIN) {
       setStatus(value as StatusState);
     } else if (key === StateHomeTopics.TIMER_STATUS) {
       setIsTimer(!isTimer);
@@ -112,7 +112,7 @@ const createStyles = () => (theme: Theme) => {
     status: {
       position: "absolute",
       top: 10,
-      left: 40,
+      left: 60,
       height: 28,
     },
     link: {
