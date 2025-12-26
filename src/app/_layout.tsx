@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
+import StatusProvider from "./providers/StatusProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,14 +28,14 @@ export default function RootLayout() {
 
   return (
     // <ThemeProvider initial={colorScheme}>
-    <>
+    <StatusProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="main" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ headerShown: false }} />
       </Stack>
       <StatusBar hidden />
-    </>
+    </StatusProvider>
     // </ThemeProvider>
   );
 }

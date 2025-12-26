@@ -20,40 +20,38 @@ const ModalUI = (props: ModalProps) => {
   const { modalVisible, closeModal, title, onSubmit, children } = props;
   const { styles, theme } = useStyles(createStyles(props));
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={modalVisible}
-        // onRequestClose={() => closeModal()}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Font
-              family={FontFamily.SOFIA}
-              size={FontSizes.MEDIUM}
-              weight={FontWeights.BOLD}
-            >
-              {title}
-            </Font>
-            <Ionicons
-              style={styles.close}
-              name="close"
-              size={32}
-              color={theme.colors.border}
-              onPress={() => closeModal()}
-            />
-            {children}
-            <Button
-              stylesBtn={styles.submit}
-              fontSize={15}
-              title={"Подтвердить"}
-              onPress={() => onSubmit()}
-            />
-          </View>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      // onRequestClose={() => closeModal()}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Font
+            family={FontFamily.SOFIA}
+            size={FontSizes.MEDIUM}
+            weight={FontWeights.BOLD}
+          >
+            {title}
+          </Font>
+          <Ionicons
+            style={styles.close}
+            name="close"
+            size={32}
+            color={theme.colors.border}
+            onPress={() => closeModal()}
+          />
+          {children}
+          <Button
+            stylesBtn={styles.submit}
+            fontSize={15}
+            title={"Подтвердить"}
+            onPress={() => onSubmit()}
+          />
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

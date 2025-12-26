@@ -21,6 +21,11 @@ interface TimerModalProps {
 export const TimerModal = (props: TimerModalProps) => {
   const { time, setTime, isLoadingTimer, dtimes, setIsLoadingTimer } = props;
   const { styles, theme } = useStyles(createStyles());
+  let len = 0;
+  if (dtimes && dtimes.length > 0)
+    dtimes.forEach((t) => {
+      if (t.length === 11) len++;
+    });
 
   function handleData(value: string) {
     const len = value.length;
@@ -39,30 +44,36 @@ export const TimerModal = (props: TimerModalProps) => {
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         {dtimes &&
-          dtimes.map((time) => (
-            <TimeEditor
-              setIsLoadingTimer={setIsLoadingTimer}
-              key={time}
-              time={time}
-              updateData={updateData}
-            />
-          ))}
-        <Text style={styles.text}>00.00-00.00</Text>
+          dtimes.map(
+            (time) =>
+              time.length === 11 && (
+                <TimeEditor
+                  setIsLoadingTimer={setIsLoadingTimer}
+                  key={time}
+                  time={time}
+                  updateData={updateData}
+                />
+              )
+          )}
+
         {isLoadingTimer ? (
           <ActivityIndicator size={45} color={theme.colors.link} />
         ) : (
           !dtimes ||
-          (dtimes?.length! < 2 && (
-            <TextInput
-              style={styles.input}
-              // autoFocus
-              placeholder="-- --"
-              // caretHidden
-              maxLength={11}
-              keyboardType="numeric"
-              value={time}
-              onChangeText={(data) => handleData(data)}
-            />
+          (len < 2 && (
+            <>
+              <Text style={styles.text}>00.00-00.00</Text>
+              <TextInput
+                style={styles.input}
+                // autoFocus
+                placeholder="-- --"
+                // caretHidden
+                maxLength={11}
+                keyboardType="numeric"
+                value={time}
+                onChangeText={(data) => handleData(data)}
+              />
+            </>
           ))
         )}
       </View>

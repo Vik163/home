@@ -1,8 +1,9 @@
 import internet from "@/shared/assets/images/internet.png";
+import { StatusContext } from "@/shared/context/StatusContext";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { brokerConnected } from "@/shared/lib/mqttBroker";
 import { Theme } from "@/shared/types/theme";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   Image,
   ImageStyle,
@@ -17,26 +18,35 @@ import {
 type Styles = ViewStyle | TextStyle | ImageStyle;
 
 export default function StatusInfo(props: {
-  value: "online" | "offline";
   stylesStatus?: Styles;
+  page: "index" | "main";
 }) {
-  const { value, stylesStatus } = props;
-  const [status, setStatus] = useState("Нет связи с брокером");
+  const { stylesStatus, page } = props;
+  const [statusText, setStatusText] = useState("Нет связи с брокером");
   const { styles, theme } = useStyles(createStyles(stylesStatus));
+  const { statusHome, statusMain } = useContext(StatusContext);
 
   useEffect(() => {
     if (!brokerConnected()) {
-      setStatus("Нет связи с брокером");
+      setStatusText("Нет связи с брокером");
     }
-    if (brokerConnected() && value === "offline")
-      setStatus("Нет связи с домом");
-    if (brokerConnected() && value === "online") setStatus("Связь установлена");
-  }, [value]);
+    if (page === "index") {
+      if (brokerConnected() && statusHome === "offline")
+        setStatusText("Нет связи с домом");
+      if (brokerConnected() && statusHome === "online")
+        setStatusText("Связь установлена");
+    } else {
+      if (brokerConnected() && statusMain === "offline")
+        setStatusText("Нет связи с домом");
+      if (brokerConnected() && statusMain === "online")
+        setStatusText("Связь установлена");
+    }
+  }, [statusMain, statusHome]);
 
   return (
     <View style={styles.status as StyleProp<ViewStyle>}>
-      {status !== "Связь установлена" ? (
-        <Text style={styles.statusText}>{status}</Text>
+      {statusText !== "Связь установлена" ? (
+        <Text style={styles.statusText}>{statusText}</Text>
       ) : (
         <Image style={styles.img} source={internet} />
       )}

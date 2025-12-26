@@ -5,22 +5,17 @@ import { FontFamily } from "@/shared/constants/fonts";
 import {
   stateHomeGroupTopics,
   StateHomeTopics,
-  statusTopic,
 } from "@/shared/constants/mqttTopics";
+import { StatusContext } from "@/shared/context/StatusContext";
 import { useEffectMount } from "@/shared/hooks/useEffectMount";
 import { useStyles } from "@/shared/hooks/useStyles";
-import {
-  brokerConnected,
-  client,
-  mqttConnect,
-  mqttSubscribeTopic,
-} from "@/shared/lib/mqttBroker";
+import { brokerConnected, client, mqttConnect } from "@/shared/lib/mqttBroker";
 import { ArduinoData } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import * as UI from "shared/ui";
 
@@ -36,9 +31,10 @@ export default function RootPage() {
   const [max, setMax] = useState("0");
   const [min, setMin] = useState("0");
   const [threshold, setThreshold] = useState("0");
+  const [isConnected, setIsConnected] = useState(brokerConnected());
   const [average, setAverage] = useState("0");
-  const [status, setStatus] = useState<StatusState>("offline");
   const { styles } = useStyles(createStyles());
+  const { setStatusHome } = useContext(StatusContext);
 
   const router = useRouter();
 
@@ -74,13 +70,10 @@ export default function RootPage() {
     if (!client.isConnected()) mqttConnect(stateHomeGroupTopics);
   }, []);
 
-  useEffect(() => {
-    if (brokerConnected()) {
-      mqttSubscribeTopic(statusTopic);
-    }
-
+  if (isConnected !== brokerConnected()) {
     getStatData();
-  }, [brokerConnected()]);
+    setIsConnected(brokerConnected());
+  }
 
   useEffect(() => {
     async function onMessageArrived(message: {
@@ -130,7 +123,7 @@ export default function RootPage() {
           setMin(value.slice(0, -3));
           break;
         case StateHomeTopics.STATUS:
-          setStatus(value as StatusState);
+          if (setStatusHome) setStatusHome(value as StatusState);
           break;
 
         default:
@@ -144,7 +137,7 @@ export default function RootPage() {
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <View style={styles.status}>
-        <StatusInfo value={status} />
+        <StatusInfo page="index" />
         <UI.Button
           stylesBtn={styles.link}
           icon={link}
@@ -170,14 +163,12 @@ export default function RootPage() {
 
       <UI.Button
         stylesBtn={styles.btn}
-        title={
-          !brokerConnected() ? "Установить соединение" : "Обновить статистику"
-        }
+        title={!isConnected ? "Установить соединение" : "Обновить статистику"}
         fontSize={16}
         icon={internet}
-        sizeIcon={!brokerConnected() ? 20 : 0}
+        sizeIcon={!isConnected ? 20 : 0}
         onPress={
-          !brokerConnected()
+          !isConnected
             ? () => mqttConnect(stateHomeGroupTopics)
             : () => getStatData()
         }

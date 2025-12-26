@@ -1,6 +1,7 @@
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import SwitchWithTimer from "@/features/SwitchWithTimer/SwitchWithTimer";
 import { StateHomeTopics, topicsMain } from "@/shared/constants/mqttTopics";
+import { StatusContext } from "@/shared/context/StatusContext";
 import { useStyles } from "@/shared/hooks/useStyles";
 import {
   brokerConnected,
@@ -10,8 +11,6 @@ import {
 import { ArduinoData, SwitchStatus } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
-import { AnimatedText } from "@/shared/ui/AnimatedText/AnimatedText";
-import { ExternalLink } from "@/shared/ui/ExternalLink/ExternalLink";
 import { useRouter } from "expo-router";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -20,12 +19,13 @@ import * as UI from "shared/ui";
 import { Button } from "shared/ui";
 
 export default function MainPage() {
-  const [status, setStatus] = useState<StatusState>("offline");
   const [data, setData] = useState<ArduinoData>();
   const [isOutdoorLight, setIsOutdoorLight] = useState<SwitchStatus>("0");
+  const [isConnected, setIsConnected] = useState(brokerConnected());
   const [isTimer, setIsTimer] = useState(false);
   const { styles, theme } = useStyles(createStyles());
   const router = useRouter();
+  const { setStatusMain } = React.useContext(StatusContext);
 
   function getData() {
     fetch(process.env.EXPO_PUBLIC_HTTP_SERVER)
@@ -46,13 +46,17 @@ export default function MainPage() {
     if (data?.timerOutLight) setData({ ...data, timerOutLight: arrTimes });
   }
 
+  if (isConnected !== brokerConnected()) {
+    setIsConnected(brokerConnected());
+  }
+
   useEffect(() => {
     getData();
 
-    if (brokerConnected()) {
+    if (isConnected) {
       mqttSubscribeArrTopics(topicsMain);
     }
-  }, [brokerConnected()]);
+  }, [isConnected]);
 
   async function onMessageArrived(message: {
     payloadString: string;
@@ -63,7 +67,7 @@ export default function MainPage() {
       .split("/")
       .slice(-1)[0] as HomeStateTopics;
     if (key === StateHomeTopics.STATUS_MAIN) {
-      setStatus(value as StatusState);
+      if (setStatusMain) setStatusMain(value as StatusState);
     } else if (key === StateHomeTopics.TIMER_STATUS) {
       setIsTimer(!isTimer);
     } else if (key === StateHomeTopics.LIGHT_STATUS) {
@@ -76,7 +80,7 @@ export default function MainPage() {
 
   return (
     <UI.Container addStyles={styles.container} bgImage>
-      <StatusInfo value={status} stylesStatus={styles.status} />
+      <StatusInfo stylesStatus={styles.status} page="main" />
       <SwitchWithTimer
         updateData={updateData}
         isOutdoorLight={isOutdoorLight}
@@ -90,11 +94,10 @@ export default function MainPage() {
         onPress={() => router.navigate("/")}
       />
 
-      <ExternalLink
+      {/* <ExternalLink
         href={"https://photosalon.online"}
         style={{ backgroundColor: "#55ffff" }}
-      />
-      <AnimatedText />
+      /> */}
     </UI.Container>
   );
 }
