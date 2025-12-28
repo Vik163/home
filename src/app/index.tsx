@@ -1,3 +1,4 @@
+import { StatModal } from "@/features/StatModal/StatModal";
 import StatusInfo from "@/features/StatusInfo/StatusInfo";
 import internet from "@/shared/assets/images/internet.png";
 import link from "@/shared/assets/images/link.png";
@@ -14,6 +15,7 @@ import { ArduinoData } from "@/shared/types/arduino";
 import { Theme } from "@/shared/types/theme";
 import { HomeStateTopics, StatusState } from "@/shared/types/topics";
 import { IndicationModule } from "@/shared/ui/IndicationModule/IndicationModule";
+import ModalUI from "@/shared/ui/ModalUI/ModalUI";
 import { useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -33,8 +35,10 @@ export default function RootPage() {
   const [threshold, setThreshold] = useState("0");
   const [isConnected, setIsConnected] = useState(brokerConnected());
   const [average, setAverage] = useState("0");
+  const [data, setData] = useState<ArduinoData>();
   const { styles } = useStyles(createStyles());
   const { setStatusHome } = useContext(StatusContext);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const router = useRouter();
 
@@ -44,6 +48,7 @@ export default function RootPage() {
         return await res.json();
       })
       .then((data: ArduinoData) => {
+        setData(data);
         const min = Math.min(...data.min);
         setMin(min.toString());
 
@@ -134,6 +139,10 @@ export default function RootPage() {
     client.onMessageArrived = onMessageArrived;
   }, []);
 
+  function closeModal() {
+    setModalVisible(false);
+  }
+
   return (
     <UI.Container addStyles={styles.container} bgImage>
       <View style={styles.status}>
@@ -161,18 +170,41 @@ export default function RootPage() {
       <IndicationModule title="U среднее" value={average} />
       <IndicationModule title="U < 190 мин" value={threshold} />
 
-      <UI.Button
-        stylesBtn={styles.btn}
-        title={!isConnected ? "Установить соединение" : "Обновить статистику"}
-        fontSize={16}
-        icon={internet}
-        sizeIcon={!isConnected ? 20 : 0}
-        onPress={
-          !isConnected
-            ? () => mqttConnect(stateHomeGroupTopics)
-            : () => getStatData()
-        }
-      />
+      {!isConnected ? (
+        <UI.Button
+          stylesBtn={styles.btn}
+          title="Установить соединение"
+          fontSize={16}
+          icon={internet}
+          sizeIcon={20}
+          onPress={() => mqttConnect(stateHomeGroupTopics)}
+        />
+      ) : (
+        <View style={styles.btnContainer}>
+          <UI.Button
+            stylesBtn={styles.btnItem}
+            title={"Обновить"}
+            fontSize={16}
+            onPress={() => getStatData()}
+          />
+          <UI.Button
+            stylesBtn={styles.btnItem}
+            title="Подробнее"
+            fontSize={16}
+            onPress={() => (data ? setModalVisible(true) : getStatData())}
+          />
+        </View>
+      )}
+      {modalVisible && (
+        <ModalUI
+          title="Замеры за 24 часа"
+          width={350}
+          closeModal={() => closeModal()}
+          modalVisible={modalVisible}
+        >
+          <StatModal data={data!} />
+        </ModalUI>
+      )}
     </UI.Container>
   );
 }
@@ -180,7 +212,7 @@ export default function RootPage() {
 const createStyles = () => (theme: Theme) => {
   return StyleSheet.create({
     container: {
-      rowGap: 15,
+      rowGap: 14,
       columnGap: 20,
       flexDirection: "row",
       flexWrap: "wrap",
@@ -203,6 +235,11 @@ const createStyles = () => (theme: Theme) => {
       borderRadius: 10,
       width: 40,
     },
+    btnContainer: {
+      flexDirection: "row",
+      gap: 20,
+      width: "90%",
+    },
     btn: {
       marginTop: 5,
       gap: 10,
@@ -210,6 +247,15 @@ const createStyles = () => (theme: Theme) => {
       borderWidth: 1,
       borderRadius: 10,
       width: "90%",
+      height: 35,
+    },
+    btnItem: {
+      marginTop: 5,
+      gap: 10,
+      borderColor: theme.colors.border,
+      borderWidth: 1,
+      borderRadius: 10,
+      width: 150,
       height: 35,
     },
   });

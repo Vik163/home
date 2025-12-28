@@ -9,7 +9,7 @@ import { Modal, StyleSheet, View } from "react-native";
 interface ModalProps {
   modalVisible: boolean;
   closeModal: () => void;
-  onSubmit: () => void;
+  onSubmit?: () => void;
   title: string;
   width: number;
   height?: number;
@@ -43,12 +43,14 @@ const ModalUI = (props: ModalProps) => {
             onPress={() => closeModal()}
           />
           {children}
-          <Button
-            stylesBtn={styles.submit}
-            fontSize={15}
-            title={"Подтвердить"}
-            onPress={() => onSubmit()}
-          />
+          {onSubmit && (
+            <Button
+              stylesBtn={styles.submit}
+              fontSize={15}
+              title={"Подтвердить"}
+              onPress={() => onSubmit()}
+            />
+          )}
         </View>
       </View>
     </Modal>
