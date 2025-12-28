@@ -1,13 +1,7 @@
 import { useStyles } from "@/shared/hooks/useStyles";
 import { Theme } from "@/shared/types/theme";
 import * as React from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, TextInput, View } from "react-native";
 import TimeEditor from "./TimeEditor";
 
 interface TimerModalProps {
@@ -61,19 +55,16 @@ export const TimerModal = (props: TimerModalProps) => {
         ) : (
           !dtimes ||
           (len < 2 && (
-            <>
-              <Text style={styles.text}>00.00-00.00</Text>
-              <TextInput
-                style={styles.input}
-                // autoFocus
-                placeholder="-- --"
-                // caretHidden
-                maxLength={11}
-                keyboardType="numeric"
-                value={time}
-                onChangeText={(data) => handleData(data)}
-              />
-            </>
+            <TextInput
+              style={styles.input}
+              // autoFocus
+              placeholder="00.00-00.00"
+              // caretHidden
+              maxLength={11}
+              keyboardType="numeric"
+              value={time}
+              onChangeText={(data) => handleData(data)}
+            />
           ))
         )}
       </View>

@@ -35,11 +35,14 @@ const createStyles = () => (theme: Theme) => {
     },
     num: {
       width: 45,
+      height: 24,
       fontSize: 16,
+      lineHeight: 22,
+      textAlign: "center",
       color: theme.colors.yellow,
       borderColor: theme.colors.border,
+      paddingLeft: 5,
       borderWidth: 1,
-      textAlign: "center",
       borderRadius: 4,
     },
     title: {

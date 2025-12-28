@@ -38,7 +38,7 @@ const ModalUI = (props: ModalProps) => {
           <Ionicons
             style={styles.close}
             name="close"
-            size={32}
+            size={38}
             color={theme.colors.border}
             onPress={() => closeModal()}
           />
@@ -95,6 +95,8 @@ const createStyles = (props: ModalProps) => (theme: Theme) => {
       position: "absolute",
       top: 7,
       right: 7,
+      width: 40,
+      height: 38,
     },
     submit: {
       width: "100%",

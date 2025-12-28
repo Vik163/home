@@ -219,6 +219,7 @@ const createStyles = () => (theme: Theme) => {
       alignItems: "center",
       justifyContent: "center",
     },
+
     status: {
       width: "90%",
       display: "flex",
@@ -237,8 +238,8 @@ const createStyles = () => (theme: Theme) => {
     },
     btnContainer: {
       flexDirection: "row",
-      gap: 20,
-      width: "90%",
+      justifyContent: "space-between",
+      width: "100%",
     },
     btn: {
       marginTop: 5,

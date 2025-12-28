@@ -1,8 +1,9 @@
+import basket from "@/shared/assets/images/basket.png";
 import { timerTopic } from "@/shared/constants/mqttTopics";
 import { useStyles } from "@/shared/hooks/useStyles";
 import { sendMessageId } from "@/shared/lib/mqttBroker";
 import { Theme } from "@/shared/types/theme";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import { Button } from "@/shared/ui";
 import { StyleSheet, Text, View } from "react-native";
 
 interface TimeEditorProps {
@@ -23,11 +24,10 @@ export default function TimeEditor(props: TimeEditorProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{time}</Text>
-      <Ionicons
-        style={styles.basket}
-        name="close"
-        size={25}
-        color={theme.colors.border}
+      <Button
+        stylesBtn={styles.basket}
+        icon={basket}
+        sizeIcon={18}
         onPress={() => deleteTime(time)}
       />
     </View>
